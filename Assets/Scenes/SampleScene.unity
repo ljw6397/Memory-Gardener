@@ -417,6 +417,8 @@ MonoBehaviour:
   aimZoomFactor: 0.85
   aimLookOffset: 1.2
   aimTransitionSpeed: 6
+  shakeDuration: 0.25
+  shakeMagnitudePixels: 3
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,6 +740,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   dashAttackBurstSpeed: 14
   dashAttackBurstDuration: 0.3
+  slamFallSpeed: 5
 --- !u!114 &682296339
 MonoBehaviour:
   m_ObjectHideFlags: 0
