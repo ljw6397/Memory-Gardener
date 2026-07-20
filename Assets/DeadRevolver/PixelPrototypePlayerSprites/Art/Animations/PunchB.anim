@@ -79,9 +79,23 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.0625
+    functionName: AnimEvent_HitboxOn
+    data: B
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.125
     functionName: AnimEvent_AttackFinished
     data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.1875
+    functionName: AnimEvent_HitboxOff
+    data: B
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

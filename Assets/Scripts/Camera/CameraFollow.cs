@@ -19,7 +19,11 @@ public class CameraFollow : MonoBehaviour
 
     [Header("Landing Shake")]
     public float shakeDuration = 0.25f;
-    public float shakeMagnitudePixels = 3f; // 흔들리는 폭 (픽셀 단위)
+    public float shakeMagnitudePixels = 3f;
+
+    [Header("Hit Shake")]
+    public float hitShakeDuration = 0.12f;      // ★ 추가: 타격 흔들림은 착지보다 짧고 톡톡 튀는 느낌으로
+    public float hitShakeMagnitudePixels = 2f;  // ★ 추가: 세기도 착지보다 살짝 약하게 (기본값)
 
     private Vector3 velocity = Vector3.zero;
     private float lockedY;
@@ -28,7 +32,10 @@ public class CameraFollow : MonoBehaviour
     private int baseRefResX;
     private int baseRefResY;
     private float aimBlend = 0f;
+
     private float shakeTimer = 0f;
+    private float currentShakeDuration = 0f;      // ★ 추가: 지금 재생 중인 흔들림이 착지용인지 타격용인지에 따라 다른 duration/magnitude를 씀
+    private float currentShakeMagnitude = 0f;      // ★ 추가
 
     void Start()
     {
@@ -42,18 +49,29 @@ public class CameraFollow : MonoBehaviour
             baseRefResY = pixelPerfectCamera.refResolutionY;
         }
 
-        // ★ 추가: 플레이어가 착지 슬램하면 흔들림 이벤트 구독
         if (playerController != null) playerController.OnSlamLand += TriggerLandingShake;
+        PunchHitbox.OnEnemyHit += TriggerHitShake; // ★ 추가: static 이벤트라 인스턴스 없이 바로 구독 가능
     }
 
     void OnDestroy()
     {
         if (playerController != null) playerController.OnSlamLand -= TriggerLandingShake;
+        PunchHitbox.OnEnemyHit -= TriggerHitShake; // ★ 추가
     }
 
     void TriggerLandingShake()
     {
         shakeTimer = shakeDuration;
+        currentShakeDuration = shakeDuration;
+        currentShakeMagnitude = shakeMagnitudePixels;
+    }
+
+    // ★ 추가: 타격 흔들림 발동
+    void TriggerHitShake()
+    {
+        shakeTimer = hitShakeDuration;
+        currentShakeDuration = hitShakeDuration;
+        currentShakeMagnitude = hitShakeMagnitudePixels;
     }
 
     void LateUpdate()
@@ -81,14 +99,14 @@ public class CameraFollow : MonoBehaviour
 
         currentPosition = Vector3.SmoothDamp(currentPosition, desiredPosition, ref velocity, smoothTime);
 
-        //착지 흔들림 
+  
         float shakeOffsetX = 0f;
         if (shakeTimer > 0f)
         {
             shakeTimer -= Time.deltaTime;
-            float decay = Mathf.Clamp01(shakeTimer / shakeDuration);
+            float decay = Mathf.Clamp01(shakeTimer / currentShakeDuration);
             float unitsPerPixelShake = 1f / pixelsPerUnit;
-            shakeOffsetX = Random.Range(-1f, 1f) * shakeMagnitudePixels * unitsPerPixelShake * decay;
+            shakeOffsetX = Random.Range(-1f, 1f) * currentShakeMagnitude * unitsPerPixelShake * decay;
         }
 
         float unitsPerPixel = 1f / pixelsPerUnit;
