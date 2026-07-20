@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ea7e9b55bee0bb04f89770c1aca55b59
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Demo/ButtonControlShoulderLeft.controller
+  uploadId: 814214

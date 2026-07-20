@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dc6b7ef000e951140bdf3f1d93f2e6bc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/FormElements/ToggleAUncheck.anim
+  uploadId: 814214

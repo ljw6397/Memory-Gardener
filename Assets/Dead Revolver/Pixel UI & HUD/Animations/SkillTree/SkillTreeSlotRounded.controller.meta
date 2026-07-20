@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 258e8e02609c49249a0b0be03bc0490e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillTreeSlotRounded.controller
+  uploadId: 814214

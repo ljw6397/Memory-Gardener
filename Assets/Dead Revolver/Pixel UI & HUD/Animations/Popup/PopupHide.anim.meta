@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d59fd38dc6c9a2c47a71ffacf31da615
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Popup/PopupHide.anim
+  uploadId: 814214

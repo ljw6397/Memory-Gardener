@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 244313832eca2604d957d9a748a95a3e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Lists/DigitalListItem.controller
+  uploadId: 814214

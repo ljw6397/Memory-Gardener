@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4adbd31048ca496499477d07e6ea7a31
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/FormElements/AddButton.controller
+  uploadId: 814214

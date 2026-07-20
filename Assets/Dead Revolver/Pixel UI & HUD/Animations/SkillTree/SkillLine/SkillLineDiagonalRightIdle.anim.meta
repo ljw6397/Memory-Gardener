@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c673c998fedcfbf4e92ce2da6afa5d65
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillLine/SkillLineDiagonalRightIdle.anim
+  uploadId: 814214

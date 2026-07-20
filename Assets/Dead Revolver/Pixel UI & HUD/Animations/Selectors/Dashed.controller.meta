@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b9832c8cf01c4e24ba4d51264cb4c9fa
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Selectors/Dashed.controller
+  uploadId: 814214

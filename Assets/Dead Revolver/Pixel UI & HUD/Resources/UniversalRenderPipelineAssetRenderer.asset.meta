@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 467d03c3724b21c4b9024f1aa1650960
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Resources/UniversalRenderPipelineAssetRenderer.asset
+  uploadId: 814214

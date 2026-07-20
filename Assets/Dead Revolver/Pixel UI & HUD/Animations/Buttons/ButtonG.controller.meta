@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4cc98a72f53d1184baaf999d7c36289e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ButtonG.controller
+  uploadId: 814214

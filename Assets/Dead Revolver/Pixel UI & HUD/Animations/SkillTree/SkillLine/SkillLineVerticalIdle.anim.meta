@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 36cd19fa6f9120149bc9d9787e690fd5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillLine/SkillLineVerticalIdle.anim
+  uploadId: 814214

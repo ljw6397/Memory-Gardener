@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4126ea3f700af614b833698ce98e9150
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillTreeSlotLarge.controller
+  uploadId: 814214

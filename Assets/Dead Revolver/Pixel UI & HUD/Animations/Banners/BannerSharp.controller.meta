@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c077f37699ecd6b43938dd57f57fe711
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Banners/BannerSharp.controller
+  uploadId: 814214

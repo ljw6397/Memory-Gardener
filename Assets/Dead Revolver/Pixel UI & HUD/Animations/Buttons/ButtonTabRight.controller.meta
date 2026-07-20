@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ce16f65313d939e428e91538bc38b50e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ButtonTabRight.controller
+  uploadId: 814214

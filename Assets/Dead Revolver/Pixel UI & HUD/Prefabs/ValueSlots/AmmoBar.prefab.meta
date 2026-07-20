@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f1841e1c84c82fb41a5ef4bef7026e7e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/ValueSlots/AmmoBar.prefab
+  uploadId: 814214

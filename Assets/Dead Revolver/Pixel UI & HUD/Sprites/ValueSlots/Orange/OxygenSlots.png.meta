@@ -1,0 +1,1073 @@
+fileFormatVersion: 2
+guid: 196ea0847fd112b4d8e3fa1e48c80862
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5335382579099936189
+    second: OxygenSlots_0
+  - first:
+      213: -369696967635760495
+    second: OxygenSlots_1
+  - first:
+      213: -7649931743732571964
+    second: OxygenSlots_2
+  - first:
+      213: 4171711236563493
+    second: OxygenSlots_3
+  - first:
+      213: -4134466179253182963
+    second: OxygenSlots_4
+  - first:
+      213: -2281775057323431540
+    second: OxygenSlots_5
+  - first:
+      213: 6161488724054845395
+    second: OxygenSlots_6
+  - first:
+      213: -6256830434530833275
+    second: OxygenSlots_7
+  - first:
+      213: 2588975509888714693
+    second: OxygenSlots_8
+  - first:
+      213: 5121479628692885830
+    second: OxygenSlots_9
+  - first:
+      213: -1608632643979042412
+    second: OxygenSlots_10
+  - first:
+      213: -5562233144886534725
+    second: OxygenSlots_11
+  - first:
+      213: 3412486447070782405
+    second: OxygenSlots_12
+  - first:
+      213: -574500944422868208
+    second: OxygenSlots_13
+  - first:
+      213: -1258231303758430166
+    second: OxygenSlots_14
+  - first:
+      213: -2614804170404090121
+    second: OxygenSlots_15
+  - first:
+      213: 8437794693933443287
+    second: OxygenSlots_16
+  - first:
+      213: -770143990336739813
+    second: OxygenSlots_17
+  - first:
+      213: -8982356024441709231
+    second: OxygenSlots_18
+  - first:
+      213: 385514517808299981
+    second: OxygenSlots_19
+  - first:
+      213: 1219445320788553212
+    second: OxygenSlots_20
+  - first:
+      213: 8957163819600501180
+    second: OxygenSlots_21
+  - first:
+      213: -173080604806751625
+    second: OxygenSlots_22
+  - first:
+      213: -2253621785215420344
+    second: OxygenSlots_23
+  - first:
+      213: -473257674140485095
+    second: OxygenSlots_24
+  - first:
+      213: 3065873691291649755
+    second: OxygenSlots_25
+  - first:
+      213: 7490259005488425158
+    second: OxygenSlots_26
+  - first:
+      213: 3969009579281157851
+    second: OxygenSlots_27
+  - first:
+      213: -507971954246981622
+    second: OxygenSlots_28
+  - first:
+      213: -6625233994912667214
+    second: OxygenSlots_29
+  - first:
+      213: -7592359584150038317
+    second: OxygenSlots_30
+  - first:
+      213: 3387545629436909621
+    second: OxygenSlots_31
+  - first:
+      213: 2446486840647913428
+    second: OxygenSlots_32
+  - first:
+      213: 6047051270869427299
+    second: OxygenSlots_33
+  - first:
+      213: 1717283863310078446
+    second: OxygenSlots_34
+  - first:
+      213: 3031492266919446615
+    second: OxygenSlots_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: OxygenSlots_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 39
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db52f0800361b0a40800000000000000
+      internalID: 5335382579099936189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 31
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a088111929edaf0800000000000000
+      internalID: -369696967635760495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_2
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c0e5d23c9bf5d590800000000000000
+      internalID: -7649931743732571964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_3
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5226c563622de0000800000000000000
+      internalID: 4171711236563493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_4
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e5fb15aec6f96c0800000000000000
+      internalID: -4134466179253182963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_5
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c89e3eabca18550e0800000000000000
+      internalID: -2281775057323431540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_6
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d72ddc7951028550800000000000000
+      internalID: 6161488724054845395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_7
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58ccfe1bed54b29a0800000000000000
+      internalID: -6256830434530833275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_8
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c74a1f5283ede320800000000000000
+      internalID: 2588975509888714693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_9
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64193a86696231740800000000000000
+      internalID: 5121479628692885830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_10
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4912889122dfca9e0800000000000000
+      internalID: -1608632643979042412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_11
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbd5229bc6afec2b0800000000000000
+      internalID: -5562233144886534725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_12
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c32d7ee7569b5f20800000000000000
+      internalID: 3412486447070782405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_13
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01b6c845f66f608f0800000000000000
+      internalID: -574500944422868208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a20c33eab4dd98ee0800000000000000
+      internalID: -1258231303758430166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_15
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7feaad9f57956bbd0800000000000000
+      internalID: -2614804170404090121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_16
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 39
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d8249b9191191570800000000000000
+      internalID: 8437794693933443287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_17
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 31
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b16a3160f16ef45f0800000000000000
+      internalID: -770143990336739813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_18
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 39
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15ddf0d49c2485380800000000000000
+      internalID: -8982356024441709231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_19
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 31
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf38b1596f995500800000000000000
+      internalID: 385514517808299981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfd2d90fe075ce010800000000000000
+      internalID: 1219445320788553212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb9d44e690d3e4c70800000000000000
+      internalID: 8957163819600501180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_22
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77adbf06b18199df0800000000000000
+      internalID: -173080604806751625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_23
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84837223de689b0e0800000000000000
+      internalID: -2253621785215420344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_24
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91af0ad17a6ae69f0800000000000000
+      internalID: -473257674140485095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_25
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd687a7e0eb2c8a20800000000000000
+      internalID: 3065873691291649755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_26
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c8eec161eeb2f760800000000000000
+      internalID: 7490259005488425158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_27
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bde0d230f21c41730800000000000000
+      internalID: 3969009579281157851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_28
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a086f3fe23253f8f0800000000000000
+      internalID: -507971954246981622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_29
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b9636b98c07e04a0800000000000000
+      internalID: -6625233994912667214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_30
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d854bb2f2582a690800000000000000
+      internalID: -7592359584150038317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_31
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 538930f4dcaf20f20800000000000000
+      internalID: 3387545629436909621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_32
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4df8c7cc1daa3f120800000000000000
+      internalID: 2446486840647913428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_33
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3642fba97117be350800000000000000
+      internalID: 6047051270869427299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_34
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 7
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee19b1b339405d710800000000000000
+      internalID: 1717283863310078446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: OxygenSlots_35
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 0
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 758c31db726021a20800000000000000
+      internalID: 3031492266919446615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      OxygenSlots_0: 5335382579099936189
+      OxygenSlots_1: -369696967635760495
+      OxygenSlots_10: -1608632643979042412
+      OxygenSlots_11: -5562233144886534725
+      OxygenSlots_12: 3412486447070782405
+      OxygenSlots_13: -574500944422868208
+      OxygenSlots_14: -1258231303758430166
+      OxygenSlots_15: -2614804170404090121
+      OxygenSlots_16: 8437794693933443287
+      OxygenSlots_17: -770143990336739813
+      OxygenSlots_18: -8982356024441709231
+      OxygenSlots_19: 385514517808299981
+      OxygenSlots_2: -7649931743732571964
+      OxygenSlots_20: 1219445320788553212
+      OxygenSlots_21: 8957163819600501180
+      OxygenSlots_22: -173080604806751625
+      OxygenSlots_23: -2253621785215420344
+      OxygenSlots_24: -473257674140485095
+      OxygenSlots_25: 3065873691291649755
+      OxygenSlots_26: 7490259005488425158
+      OxygenSlots_27: 3969009579281157851
+      OxygenSlots_28: -507971954246981622
+      OxygenSlots_29: -6625233994912667214
+      OxygenSlots_3: 4171711236563493
+      OxygenSlots_30: -7592359584150038317
+      OxygenSlots_31: 3387545629436909621
+      OxygenSlots_32: 2446486840647913428
+      OxygenSlots_33: 6047051270869427299
+      OxygenSlots_34: 1717283863310078446
+      OxygenSlots_35: 3031492266919446615
+      OxygenSlots_4: -4134466179253182963
+      OxygenSlots_5: -2281775057323431540
+      OxygenSlots_6: 6161488724054845395
+      OxygenSlots_7: -6256830434530833275
+      OxygenSlots_8: 2588975509888714693
+      OxygenSlots_9: 5121479628692885830
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Sprites/ValueSlots/Orange/OxygenSlots.png
+  uploadId: 814214

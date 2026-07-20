@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c2c9ab8f3947a064d8f2a9fc36f6824b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/ValueSlots/HealthSlotBarVerticalSmall.prefab
+  uploadId: 814214

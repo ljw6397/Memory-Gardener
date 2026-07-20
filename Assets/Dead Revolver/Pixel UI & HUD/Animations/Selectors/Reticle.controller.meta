@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4df946aa085486c44be7fe944256e592
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Selectors/Reticle.controller
+  uploadId: 814214

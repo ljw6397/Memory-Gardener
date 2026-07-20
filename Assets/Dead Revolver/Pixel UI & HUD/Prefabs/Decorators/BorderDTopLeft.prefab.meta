@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b461593bf373ee443898e5e93f4e255e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/Decorators/BorderDTopLeft.prefab
+  uploadId: 814214

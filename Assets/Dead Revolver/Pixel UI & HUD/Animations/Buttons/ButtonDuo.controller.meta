@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 08c5a28f965ac414ea7edceb1654ce2e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ButtonDuo.controller
+  uploadId: 814214

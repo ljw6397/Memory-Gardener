@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6a9102e5a4e1b7f4b8d90e1af300540a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Selectors/ChevronDown.controller
+  uploadId: 814214

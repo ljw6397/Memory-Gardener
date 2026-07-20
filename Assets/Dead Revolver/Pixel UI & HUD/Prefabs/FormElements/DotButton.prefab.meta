@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c7ef9abb6fd739544a4887d474579dde
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/FormElements/DotButton.prefab
+  uploadId: 814214

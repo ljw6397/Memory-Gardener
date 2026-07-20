@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c0c868ab393cf1e4cb62c26223209215
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ButtonStoneCircle.controller
+  uploadId: 814214

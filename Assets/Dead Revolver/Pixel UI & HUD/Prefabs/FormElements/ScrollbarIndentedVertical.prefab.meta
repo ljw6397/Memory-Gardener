@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cf452836578444e4aa82411705853e15
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/FormElements/ScrollbarIndentedVertical.prefab
+  uploadId: 814214

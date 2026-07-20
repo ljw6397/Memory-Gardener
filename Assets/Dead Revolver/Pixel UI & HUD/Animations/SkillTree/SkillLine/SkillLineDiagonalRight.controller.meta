@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6ef38c02944d0624f87d3f2692025272
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillLine/SkillLineDiagonalRight.controller
+  uploadId: 814214

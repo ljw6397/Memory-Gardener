@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d9cb81c48ddcaaf4290cf43369f19b9c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ButtonCloseB.controller
+  uploadId: 814214

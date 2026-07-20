@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dd4494ebaeb2d7e4f8f36bb80822c6ff
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/FormElements/ScrollbarHandleIndented.prefab
+  uploadId: 814214

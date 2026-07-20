@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 162a6f6eb7b31844f9aa9b458ea4f55e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/HeartDetailedHeal.anim
+  uploadId: 814214

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75bdb6b20d23ef941b7eb3942c70fc6b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillLine/SkillLineDiagonalRightSelect.anim
+  uploadId: 814214

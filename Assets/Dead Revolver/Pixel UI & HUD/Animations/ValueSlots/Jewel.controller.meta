@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 400e248cc13c6d74b8a557942d1ea3ec
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/Jewel.controller
+  uploadId: 814214

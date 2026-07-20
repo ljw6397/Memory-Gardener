@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b91fd2056a72d1e41b1c663b7f736d21
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Demo/GameOverQuit.anim
+  uploadId: 814214

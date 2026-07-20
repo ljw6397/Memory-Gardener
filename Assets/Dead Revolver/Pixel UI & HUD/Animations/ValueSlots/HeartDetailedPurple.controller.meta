@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5bceccb771b329499033607b1f5c16e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/HeartDetailedPurple.controller
+  uploadId: 814214

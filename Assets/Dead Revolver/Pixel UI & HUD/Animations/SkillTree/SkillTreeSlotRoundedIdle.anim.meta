@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: abd2a053c897c294c943820351a94f65
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/SkillTree/SkillTreeSlotRoundedIdle.anim
+  uploadId: 814214

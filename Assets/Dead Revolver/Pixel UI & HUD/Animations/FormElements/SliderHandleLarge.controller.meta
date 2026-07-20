@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 342e706ae14f2bc4bad5aa4deb8bf566
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/FormElements/SliderHandleLarge.controller
+  uploadId: 814214

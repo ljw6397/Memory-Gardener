@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95085d84e5efaa14e900afe1e5354db2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/HeartMinimalIdle.anim
+  uploadId: 814214

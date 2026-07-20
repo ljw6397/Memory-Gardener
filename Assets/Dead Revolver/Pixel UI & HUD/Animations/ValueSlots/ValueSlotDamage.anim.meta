@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc57149222e38d940ade186fbb481dd4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/ValueSlotDamage.anim
+  uploadId: 814214

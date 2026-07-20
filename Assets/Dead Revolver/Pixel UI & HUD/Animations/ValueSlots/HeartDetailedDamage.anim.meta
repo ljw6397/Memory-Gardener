@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9cf250de15f18ec44b640809dd41a467
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/HeartDetailedDamage.anim
+  uploadId: 814214

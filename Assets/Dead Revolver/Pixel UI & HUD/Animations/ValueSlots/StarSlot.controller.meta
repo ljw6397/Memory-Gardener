@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb9e09ef13541e04c890211f77d5ea0e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/ValueSlots/StarSlot.controller
+  uploadId: 814214

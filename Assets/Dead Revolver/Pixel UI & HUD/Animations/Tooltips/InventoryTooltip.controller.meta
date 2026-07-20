@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7c1f39bc4edd24b45a96141387b7a589
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Tooltips/InventoryTooltip.controller
+  uploadId: 814214

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 66ade8928f02f88499b7b8d27ac0ad69
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/Tooltips/SkillTooltip.prefab
+  uploadId: 814214

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ef56d17df8a82e3479d66548fe38739b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Popup/Popup.controller
+  uploadId: 814214

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 91fe3e4123558c340abde49eddeeebed
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/ValueSlots/HeartSlotBar.prefab
+  uploadId: 814214

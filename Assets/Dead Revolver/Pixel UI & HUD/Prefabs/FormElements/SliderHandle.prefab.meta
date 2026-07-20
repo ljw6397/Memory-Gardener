@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 518e37eb91070bc48b40770eecd41eb9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/FormElements/SliderHandle.prefab
+  uploadId: 814214

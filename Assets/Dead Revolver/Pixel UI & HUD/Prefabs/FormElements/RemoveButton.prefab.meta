@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ecbb1ce8076fc144484a13d0785193c8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/FormElements/RemoveButton.prefab
+  uploadId: 814214

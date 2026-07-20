@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1ea4de0c1ce45ac4197e71784e47b030
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/ValueSlots/HealthSlotBar.prefab
+  uploadId: 814214

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d6ebb95505b82e847931bcbe2cfce9d1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Animations/Buttons/ChevronButtonRight.controller
+  uploadId: 814214

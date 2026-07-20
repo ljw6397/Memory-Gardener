@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a39b3804edaba4c46a1e1d1846784ad3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342406
+  packageName: Pixel UI & HUD
+  packageVersion: 1.0
+  assetPath: Assets/Dead Revolver/Pixel UI & HUD/Prefabs/ValueBars/MinimalBarRounded.prefab
+  uploadId: 814214
