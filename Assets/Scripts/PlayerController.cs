@@ -73,21 +73,21 @@ public class PlayerController : MonoBehaviour
     {
         CheckGrounded();
 
-        //슬램 착지 감지 
+        // 슬램 착지 감지 (땅 닿는 순간 딱 한 번 이벤트 발생)
         if (isSlamming && isGrounded)
         {
             isSlamming = false;
             OnSlamLand?.Invoke();
         }
-        animator.SetBool("IsSlamming", isSlamming); 
 
         UpdateFacingDirection();
         isAiming = Input.GetMouseButton(1);
 
-        //슬램 중엔 고정 낙하속도만 유지, 나머지 전부 무시
+        // 슬램 중엔 고정 낙하속도만 유지, 나머지 전부 무시
         if (isSlamming)
         {
             rb.linearVelocity = new Vector2(0f, -slamFallSpeed);
+            animator.SetBool("IsSlamming", true); // ★ 위치 이동
             animator.SetBool("Grounded", isGroundedAnim);
             animator.SetFloat("VelocityY", rb.linearVelocity.y);
             return;
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
             dashAttackTimer -= Time.deltaTime;
             if (dashAttackTimer <= 0f) isDashAttacking = false;
 
+            animator.SetBool("IsSlamming", false); // ★ 추가
             animator.SetBool("Grounded", isGroundedAnim);
             animator.SetFloat("VelocityY", rb.linearVelocity.y);
             return;
@@ -110,6 +111,7 @@ public class PlayerController : MonoBehaviour
             dashTimer -= Time.deltaTime;
             if (dashTimer <= 0f) isDashing = false;
 
+            animator.SetBool("IsSlamming", false); // ★ 추가
             animator.SetBool("Grounded", isGroundedAnim);
             animator.SetFloat("VelocityY", rb.linearVelocity.y);
             return;
@@ -118,8 +120,9 @@ public class PlayerController : MonoBehaviour
         HandleMove();
         HandleJump();
         HandleDashInput();
-        HandleSlamInput();
+        HandleSlamInput(); // ★ 여기서 isSlamming이 true로 바뀔 수 있음
 
+        animator.SetBool("IsSlamming", isSlamming); // ★ 위치 이동: HandleSlamInput() 이후로 옮겨서 이번 프레임에 바뀐 값을 바로 반영
         animator.SetBool("Grounded", isGroundedAnim);
         animator.SetFloat("VelocityY", rb.linearVelocity.y);
     }
