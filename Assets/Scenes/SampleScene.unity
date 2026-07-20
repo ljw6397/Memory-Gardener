@@ -413,6 +413,10 @@ MonoBehaviour:
   offset: {x: 0, y: 1.5, z: -15}
   smoothTime: 0.15
   pixelsPerUnit: 32
+  pixelPerfectCamera: {fileID: 0}
+  aimZoomFactor: 0.85
+  aimLookOffset: 1.2
+  aimTransitionSpeed: 6
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -731,6 +735,9 @@ MonoBehaviour:
     m_Bits: 64
   fallGravityMultiplier: 2.5
   lowJumpMultiplier: 2
+  mainCamera: {fileID: 0}
+  dashAttackBurstSpeed: 14
+  dashAttackBurstDuration: 0.3
 --- !u!114 &682296339
 MonoBehaviour:
   m_ObjectHideFlags: 0

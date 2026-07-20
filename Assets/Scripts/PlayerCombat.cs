@@ -13,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
     private bool isAttacking = false;
     private int queuedAttacks = 0;
     private float comboExpireTime = -10f;
-    private int attackStartFrame = -1; // ★ 추가: 공격을 시작한 프레임 번호 기억
+    private int attackStartFrame = -1;
 
     public bool IsAttacking => isAttacking;
 
@@ -32,6 +32,15 @@ public class PlayerCombat : MonoBehaviour
     void HandleAttackInput()
     {
         if (!Input.GetMouseButtonDown(0)) return;
+
+        //조준 중 + 아직 공격 중 아님 + 땅 + 대시 중 아님 → 대시펀치 발동
+        if (playerController != null && playerController.IsAiming && !isAttacking
+            && playerController.IsGrounded && !playerController.IsDashing)
+        {
+            TriggerDashAttack();
+            return;
+        }
+
         if (playerController != null && (!playerController.IsGrounded || playerController.IsDashing)) return;
 
         if (isAttacking)
@@ -50,14 +59,28 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    //공격 시작
     void StartAttack(int step)
     {
         comboStep = step;
         isAttacking = true;
         animator.SetInteger("ComboStep", comboStep);
         animator.SetTrigger("AttackTrigger");
-        attackStartFrame = Time.frameCount; // ★ 추가: 지금 프레임 기록
+        attackStartFrame = Time.frameCount;
     }
+
+   //대쉬 어택 트리거
+    void TriggerDashAttack()
+    {
+        comboStep = 0;
+        queuedAttacks = 0;
+        isAttacking = true; //이 걸로 공격중 확인하는거
+        animator.SetTrigger("DashAttackTrigger");
+        attackStartFrame = Time.frameCount;
+
+        playerController.StartDashAttackBurst(); 
+    }
+
 
     public void AnimEvent_AttackFinished()
     {
@@ -75,6 +98,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    //콤보 취소
     public void CancelCombo()
     {
         comboStep = 0;
@@ -83,11 +107,10 @@ public class PlayerCombat : MonoBehaviour
         comboExpireTime = -10f;
     }
 
+    //공격중인가? 확인 하는 코드
     void SafetyCheck()
     {
         if (!isAttacking) return;
-
-        // ★ 추가: 공격을 시작한 바로 그 프레임엔 아직 애니메이터가 전환 전이라 체크하면 안 됨 → 건너뜀
         if (Time.frameCount == attackStartFrame) return;
 
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
