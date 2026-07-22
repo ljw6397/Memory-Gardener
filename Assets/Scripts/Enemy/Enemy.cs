@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     private Animator animator;
 
     private bool isDead = false;
-    public bool IsDead => isDead; 
+    public bool IsDead => isDead;
 
     void Start()
     {
@@ -41,7 +41,15 @@ public class Enemy : MonoBehaviour
         if (knockbackTimer > 0f)
         {
             knockbackTimer -= Time.deltaTime;
-            if (rb != null) rb.linearVelocity = currentKnockback;
+
+            // 넉백 지속시간 동안엔 X(수평)만 계속 밀어주고, Y(수직)는 중력이 자연스럽게 처리하게 냅둠
+            if (rb != null)
+                rb.linearVelocity = new Vector2(currentKnockback.x, rb.linearVelocity.y);
+
+            if (knockbackTimer <= 0f && rb != null)
+            {
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // X만 멈춤, Y는 계속 중력 따라 자연스럽게
+            }
         }
 
         if (hitFlashTimer > 0f)
@@ -60,6 +68,10 @@ public class Enemy : MonoBehaviour
 
         currentKnockback = knockback;
         knockbackTimer = knockbackDuration;
+
+        // 맞는 순간 X, Y 둘 다 한 번에 적용 → 위로 튕기면서 옆으로도 밀려나는 궤적 시작점
+        if (rb != null)
+            rb.linearVelocity = knockback;
 
         if (spriteRenderer != null)
         {

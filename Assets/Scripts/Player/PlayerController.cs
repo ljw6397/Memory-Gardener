@@ -30,15 +30,19 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dash Attack")]
     public float dashAttackBurstSpeed = 14f;
-    public float dashAttackBurstDuration = 0.15f;      // 타겟 없을 때(허공 대시어택) 쓰는 기존 방식
-    public float dashAttackLockedMaxDuration = 0.6f;   // ★ 추가: 타겟 있을 때 최대 이 시간까지만 쫓아감 (안전장치)
-    public float dashAttackStopDistance = 1f;          // ★ 추가: 타겟과 이 거리까지 가까워지면 멈춤
+    public float dashAttackBurstDuration = 0.15f;      
+    public float dashAttackLockedMaxDuration = 0.6f;   
+    public float dashAttackStopDistance = 1f;          
 
     [Header("Ground Pound")]
     public float slamFallSpeed = 20f;
     public float slamInitialSpeed = 1f;
     public float slamAcceleration = 40f;
     public float slamRecoveryTime = 0.3f;
+
+    [Header("Enemy Collision")]
+    public float enemyCheckDistance = 0.15f; // 이 거리 안에 Enemy가 있으면 그쪽으로 이동 막음
+    public LayerMask enemyLayer;
 
     private bool isGrounded;
     public bool IsGrounded => isGrounded;
@@ -48,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashAttacking = false;
     public bool IsDashAttacking => isDashAttacking;
     private float dashAttackTimer = 0f;
-    private Transform dashAttackTarget; // ★ 추가: 지금 쫓아가는 중인 타겟 (없으면 null = 허공 대시)
+    private Transform dashAttackTarget; 
     private float dashTimer = 0f;
     private float lastDTapTime = -10f;
     private float lastATapTime = -10f;
@@ -79,7 +83,7 @@ public class PlayerController : MonoBehaviour
         if (mainCamera == null) mainCamera = Camera.main;
     }
 
-    // ★ 추가: PlayerCombat이 마우스 커서의 월드 좌표가 필요할 때 이걸 씀 (카메라 참조를 여기 한 곳으로 모아둠)
+   
     public Vector3 GetMouseWorldPosition()
     {
         if (mainCamera == null) return transform.position;
@@ -138,7 +142,6 @@ public class PlayerController : MonoBehaviour
 
         ApplyBetterGravity();
 
-        // ★ 수정된 부분: 타겟이 있으면 쫓아가고, 가까워지면 멈춤
         if (isDashAttacking)
         {
             dashAttackTimer -= Time.deltaTime;
@@ -265,6 +268,17 @@ public class PlayerController : MonoBehaviour
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
+        // ★ 추가: 이동하려는 방향에 Enemy가 바로 붙어있는지 체크
+        if (moveInput != 0f)
+        {
+            Vector2 checkDir = moveInput > 0 ? Vector2.right : Vector2.left;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, checkDir, enemyCheckDistance, enemyLayer);
+            if (hit.collider != null)
+            {
+                moveInput = 0f; // 그 방향은 막힘 → 밀지 못하게 이동 입력 자체를 0으로
+            }
+        }
+
         rb.linearVelocity = new Vector2(moveInput * currentSpeed, rb.linearVelocity.y);
 
         float rawSpeed = Mathf.Abs(moveInput) * currentSpeed;
@@ -313,8 +327,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(dashDirection * dashSpeed, rb.linearVelocity.y);
         playerCombat?.CancelCombo();
     }
-
-    // ★ 변경: target 파라미터 추가 (없으면 기존처럼 보고 있는 방향으로 허공 대시)
     public void StartDashAttackBurst(Transform target = null)
     {
         isDashAttacking = true;
@@ -351,5 +363,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * groundCheckDistance);
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * (groundCheckDistance + groundAnimAnticipation));
+
+        // ★ 추가: 좌우 Enemy 감지 거리 시각화
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * enemyCheckDistance);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.left * enemyCheckDistance);
     }
 }

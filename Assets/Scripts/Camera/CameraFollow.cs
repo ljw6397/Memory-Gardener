@@ -5,25 +5,32 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public PlayerController playerController;
+    public PlayerCombat playerCombat; 
     public Vector3 offset = new Vector3(0f, 1.5f, -15f);
     public float smoothTime = 0.15f;
 
     [Header("Pixel Perfect")]
     public float pixelsPerUnit = 32f;
 
-    [Header("Aim Zoom")]
+    [Header("Aim Zoom (평소 조준, 락온 대상 없을 때)")]
     public PixelPerfectCamera pixelPerfectCamera;
     public float aimZoomFactor = 0.85f;
     public float aimLookOffset = 1.2f;
     public float aimTransitionSpeed = 6f;
+
+    [Header("Lock-On Zoom (락온 대상 있을 때, 더 확대)")]
+    public float lockOnZoomFactor = 0.65f;     
+    public float lockOnOffsetFraction = 0.5f;   
+    public float maxLockOnOffsetX = 3f;         
+    public float lockOnTransitionSpeed = 6f;    
 
     [Header("Landing Shake")]
     public float shakeDuration = 0.25f;
     public float shakeMagnitudePixels = 3f;
 
     [Header("Hit Shake")]
-    public float hitShakeDuration = 0.12f;      // ★ 추가: 타격 흔들림은 착지보다 짧고 톡톡 튀는 느낌으로
-    public float hitShakeMagnitudePixels = 2f;  // ★ 추가: 세기도 착지보다 살짝 약하게 (기본값)
+    public float hitShakeDuration = 0.12f;
+    public float hitShakeMagnitudePixels = 2f;
 
     private Vector3 velocity = Vector3.zero;
     private float lockedY;
@@ -32,10 +39,12 @@ public class CameraFollow : MonoBehaviour
     private int baseRefResX;
     private int baseRefResY;
     private float aimBlend = 0f;
+    private float lockBlend = 0f;           
+    private float lastLockOnOffsetX = 0f;   
 
     private float shakeTimer = 0f;
-    private float currentShakeDuration = 0f;      // ★ 추가: 지금 재생 중인 흔들림이 착지용인지 타격용인지에 따라 다른 duration/magnitude를 씀
-    private float currentShakeMagnitude = 0f;      // ★ 추가
+    private float currentShakeDuration = 0f;
+    private float currentShakeMagnitude = 0f;
 
     void Start()
     {
@@ -50,13 +59,13 @@ public class CameraFollow : MonoBehaviour
         }
 
         if (playerController != null) playerController.OnSlamLand += TriggerLandingShake;
-        PunchHitbox.OnEnemyHit += TriggerHitShake; // ★ 추가: static 이벤트라 인스턴스 없이 바로 구독 가능
+        PunchHitbox.OnEnemyHit += TriggerHitShake;
     }
 
     void OnDestroy()
     {
         if (playerController != null) playerController.OnSlamLand -= TriggerLandingShake;
-        PunchHitbox.OnEnemyHit -= TriggerHitShake; // ★ 추가
+        PunchHitbox.OnEnemyHit -= TriggerHitShake;
     }
 
     void TriggerLandingShake()
@@ -66,7 +75,6 @@ public class CameraFollow : MonoBehaviour
         currentShakeMagnitude = shakeMagnitudePixels;
     }
 
-    // ★ 추가: 타격 흔들림 발동
     void TriggerHitShake()
     {
         shakeTimer = hitShakeDuration;
@@ -82,7 +90,27 @@ public class CameraFollow : MonoBehaviour
         aimBlend = Mathf.MoveTowards(aimBlend, aiming ? 1f : 0f, Time.deltaTime * aimTransitionSpeed);
 
         float facingDir = (playerController != null && playerController.FacingRight) ? 1f : -1f;
-        float aimOffsetX = facingDir * aimLookOffset * aimBlend;
+        float normalAimOffsetX = facingDir * aimLookOffset;
+
+        Transform lockedEnemy = (playerCombat != null) ? playerCombat.CurrentLockOnTarget : null;
+        bool hasLockTarget = lockedEnemy != null;
+        lockBlend = Mathf.MoveTowards(lockBlend, hasLockTarget ? 1f : 0f, Time.deltaTime * lockOnTransitionSpeed);
+
+        float lockOnOffsetX;
+        if (lockedEnemy != null)
+        {
+            float raw = (lockedEnemy.position.x - target.position.x) * lockOnOffsetFraction;
+            raw = Mathf.Clamp(raw, -maxLockOnOffsetX, maxLockOnOffsetX);
+            lastLockOnOffsetX = raw;
+            lockOnOffsetX = raw;
+        }
+        else
+        {
+            lockOnOffsetX = lastLockOnOffsetX; 
+        }
+
+        float blendedOffsetX = Mathf.Lerp(normalAimOffsetX, lockOnOffsetX, lockBlend);
+        float aimOffsetX = blendedOffsetX * aimBlend;
 
         Vector3 desiredPosition;
 
@@ -99,7 +127,6 @@ public class CameraFollow : MonoBehaviour
 
         currentPosition = Vector3.SmoothDamp(currentPosition, desiredPosition, ref velocity, smoothTime);
 
-  
         float shakeOffsetX = 0f;
         if (shakeTimer > 0f)
         {
@@ -117,8 +144,10 @@ public class CameraFollow : MonoBehaviour
 
         if (pixelPerfectCamera != null)
         {
-            float targetResX = Mathf.Lerp(baseRefResX, baseRefResX * aimZoomFactor, aimBlend);
-            float targetResY = Mathf.Lerp(baseRefResY, baseRefResY * aimZoomFactor, aimBlend);
+            float zoomFactor = Mathf.Lerp(aimZoomFactor, lockOnZoomFactor, lockBlend);
+
+            float targetResX = Mathf.Lerp(baseRefResX, baseRefResX * zoomFactor, aimBlend);
+            float targetResY = Mathf.Lerp(baseRefResY, baseRefResY * zoomFactor, aimBlend);
             pixelPerfectCamera.refResolutionX = Mathf.RoundToInt(targetResX);
             pixelPerfectCamera.refResolutionY = Mathf.RoundToInt(targetResY);
         }

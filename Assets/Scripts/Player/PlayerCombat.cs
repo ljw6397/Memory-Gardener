@@ -8,6 +8,7 @@ public class PlayerCombat : MonoBehaviour
     [Header("Combo Settings")]
     public int maxComboStep = 3;
     public float comboGraceWindow = 0.5f;
+    public float comboGapDelay = 0.08f;
 
     [Header("Hitboxes (펀치마다 손 위치가 달라서 각각 따로)")]
     public PunchHitbox punchHitboxA;
@@ -15,15 +16,19 @@ public class PlayerCombat : MonoBehaviour
     public PunchHitbox punchHitboxC;
 
     [Header("Dash Attack Targeting")]
-    public float dashAttackLockOnRadius = 6f; // ★ 추가: 마우스 커서 기준 이 반경 안의 적만 타겟으로 잡음
+    public float dashAttackRange = 8f; 
 
     private int comboStep = 0;
     private bool isAttacking = false;
     private int queuedAttacks = 0;
     private float comboExpireTime = -10f;
     private int attackStartFrame = -1;
+    private bool waitingForNextComboStep = false;
+    private float comboGapTimer = 0f;
+    private Transform currentLockOnTarget;
 
     public bool IsAttacking => isAttacking;
+    public Transform CurrentLockOnTarget => currentLockOnTarget;
 
     void Start()
     {
@@ -42,8 +47,10 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        UpdateLockOnTarget();
         HandleAttackInput();
         HandleSlamInput();
+        UpdateComboGap();
         SafetyCheck();
     }
 
@@ -54,8 +61,11 @@ public class PlayerCombat : MonoBehaviour
         if (playerController != null && playerController.IsAiming && !isAttacking
             && playerController.IsGrounded && !playerController.IsDashing)
         {
-            TriggerDashAttack();
-            return;
+            if (currentLockOnTarget != null)
+            {
+                TriggerDashAttack(currentLockOnTarget);
+                return;
+            }
         }
 
         if (playerController != null && (!playerController.IsGrounded || playerController.IsDashing)) return;
@@ -78,6 +88,8 @@ public class PlayerCombat : MonoBehaviour
 
     void StartAttack(int step)
     {
+        DeactivateAllHitboxes();
+
         comboStep = step;
         isAttacking = true;
         animator.SetInteger("ComboStep", comboStep);
@@ -106,21 +118,36 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    void DeactivateAllHitboxes()
+    {
+        punchHitboxA?.Deactivate();
+        punchHitboxB?.Deactivate();
+        punchHitboxC?.Deactivate();
+    }
+
+    void UpdateLockOnTarget()
+    {
+        bool canDashAttack = playerController != null && playerController.IsAiming
+            && !isAttacking && playerController.IsGrounded && !playerController.IsDashing;
+
+        currentLockOnTarget = canDashAttack ? FindDashAttackTarget() : null;
+    }
+
     public void AnimEvent_DashAttackFinished()
     {
         StartAttack(1);
     }
 
-    void TriggerDashAttack()
+    void TriggerDashAttack(Transform target)
     {
+        DeactivateAllHitboxes();
+
         comboStep = 0;
         queuedAttacks = 0;
         isAttacking = true;
         animator.SetTrigger("DashAttackTrigger");
         attackStartFrame = Time.frameCount;
-
-        Transform target = FindDashAttackTarget(); // ★ 추가
-        playerController.StartDashAttackBurst(target); // ★ 변경: 타겟 전달
+        playerController.StartDashAttackBurst(target);
     }
 
     Transform FindDashAttackTarget()
@@ -128,24 +155,62 @@ public class PlayerCombat : MonoBehaviour
         if (playerController == null) return null;
 
         Vector3 mouseWorldPos = playerController.GetMouseWorldPosition();
+        Vector3 playerPos = transform.position;
+        float mouseDir = Mathf.Sign(mouseWorldPos.x - playerPos.x); 
+
+        if (currentLockOnTarget != null)
+        {
+            Enemy currentEnemy = currentLockOnTarget.GetComponent<Enemy>();
+            bool stillAlive = currentEnemy != null && !currentEnemy.IsDead;
+
+            if (stillAlive)
+            {
+                float distToPlayer = Vector2.Distance(playerPos, currentLockOnTarget.position);
+                float enemyDir = Mathf.Sign(currentLockOnTarget.position.x - playerPos.x);
+
+                if (distToPlayer <= dashAttackRange && enemyDir == mouseDir)
+                {
+                    return currentLockOnTarget;
+                }
+            }
+        }
+
         Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
-        Transform closest = null;
-        float closestDist = dashAttackLockOnRadius;
+        Transform best = null;
+        float bestPlayerDist = float.MaxValue;
 
         foreach (Enemy enemy in enemies)
         {
             if (enemy.IsDead) continue;
 
-            float dist = Vector2.Distance(mouseWorldPos, enemy.transform.position);
-            if (dist <= closestDist)
+            float distToPlayer = Vector2.Distance(playerPos, enemy.transform.position);
+            if (distToPlayer > dashAttackRange) continue; 
+
+            float enemyDir = Mathf.Sign(enemy.transform.position.x - playerPos.x);
+            if (enemyDir != mouseDir) continue; 
+
+            if (distToPlayer < bestPlayerDist)
             {
-                closestDist = dist;
-                closest = enemy.transform;
+                bestPlayerDist = distToPlayer;
+                best = enemy.transform;
             }
         }
 
-        return closest;
+        return best;
+    }
+
+    void UpdateComboGap()
+    {
+        if (!waitingForNextComboStep) return;
+
+        comboGapTimer -= Time.deltaTime;
+        if (comboGapTimer <= 0f)
+        {
+            waitingForNextComboStep = false;
+            queuedAttacks--;
+            StartAttack(comboStep + 1);
+        }
     }
 
     void HandleSlamInput()
@@ -164,6 +229,8 @@ public class PlayerCombat : MonoBehaviour
 
     void TriggerSlam()
     {
+        DeactivateAllHitboxes();
+
         comboStep = 0;
         queuedAttacks = 0;
         isAttacking = true;
@@ -181,15 +248,16 @@ public class PlayerCombat : MonoBehaviour
 
     public void AnimEvent_AttackFinished()
     {
-        isAttacking = false;
+        DeactivateAllHitboxes();
 
         if (queuedAttacks > 0 && comboStep < maxComboStep)
         {
-            queuedAttacks--;
-            StartAttack(comboStep + 1);
+            waitingForNextComboStep = true;
+            comboGapTimer = comboGapDelay;
         }
         else
         {
+            isAttacking = false;
             queuedAttacks = 0;
             comboExpireTime = Time.time + comboGraceWindow;
         }
@@ -197,10 +265,13 @@ public class PlayerCombat : MonoBehaviour
 
     public void CancelCombo()
     {
+        DeactivateAllHitboxes();
+
         comboStep = 0;
         isAttacking = false;
         queuedAttacks = 0;
         comboExpireTime = -10f;
+        waitingForNextComboStep = false;
     }
 
     void SafetyCheck()
@@ -212,11 +283,12 @@ public class PlayerCombat : MonoBehaviour
 
         if (!state.IsTag("Attack") && !animator.IsInTransition(0))
         {
+            DeactivateAllHitboxes();
+
             isAttacking = false;
             comboStep = 0;
             queuedAttacks = 0;
+            waitingForNextComboStep = false;
         }
     }
-
-    
 }
