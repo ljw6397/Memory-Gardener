@@ -4,6 +4,7 @@ public class PlayerCombat : MonoBehaviour
 {
     private Animator animator;
     private PlayerController playerController;
+    private PlayerHealth playerHealth; // ★ 추가
 
     [Header("Combo Settings")]
     public int maxComboStep = 3;
@@ -16,7 +17,7 @@ public class PlayerCombat : MonoBehaviour
     public PunchHitbox punchHitboxC;
 
     [Header("Dash Attack Targeting")]
-    public float dashAttackRange = 8f; 
+    public float dashAttackRange = 8f;
 
     private int comboStep = 0;
     private bool isAttacking = false;
@@ -34,6 +35,7 @@ public class PlayerCombat : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+        playerHealth = GetComponent<PlayerHealth>(); // ★ 추가
 
         if (playerController != null)
             playerController.OnSlamRecoveryComplete += HandleSlamRecoveryComplete;
@@ -47,6 +49,9 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        // ★ 추가: 사망했거나 피격 경직 중이면 공격 관련 로직 전부 정지
+        if (playerHealth != null && (playerHealth.IsDead || playerHealth.IsHitStunned)) return;
+
         UpdateLockOnTarget();
         HandleAttackInput();
         HandleSlamInput();
@@ -59,7 +64,7 @@ public class PlayerCombat : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         if (playerController != null && playerController.IsAiming && !isAttacking
-            && playerController.IsGrounded && !playerController.IsDashing)
+            && playerController.IsGrounded)
         {
             if (currentLockOnTarget != null)
             {
@@ -68,7 +73,7 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-        if (playerController != null && (!playerController.IsGrounded || playerController.IsDashing)) return;
+        if (playerController != null && !playerController.IsGrounded) return;
 
         if (isAttacking)
         {
@@ -128,7 +133,7 @@ public class PlayerCombat : MonoBehaviour
     void UpdateLockOnTarget()
     {
         bool canDashAttack = playerController != null && playerController.IsAiming
-            && !isAttacking && playerController.IsGrounded && !playerController.IsDashing;
+            && !isAttacking && playerController.IsGrounded;
 
         currentLockOnTarget = canDashAttack ? FindDashAttackTarget() : null;
     }
@@ -156,7 +161,7 @@ public class PlayerCombat : MonoBehaviour
 
         Vector3 mouseWorldPos = playerController.GetMouseWorldPosition();
         Vector3 playerPos = transform.position;
-        float mouseDir = Mathf.Sign(mouseWorldPos.x - playerPos.x); 
+        float mouseDir = Mathf.Sign(mouseWorldPos.x - playerPos.x);
 
         if (currentLockOnTarget != null)
         {
@@ -185,10 +190,10 @@ public class PlayerCombat : MonoBehaviour
             if (enemy.IsDead) continue;
 
             float distToPlayer = Vector2.Distance(playerPos, enemy.transform.position);
-            if (distToPlayer > dashAttackRange) continue; 
+            if (distToPlayer > dashAttackRange) continue;
 
             float enemyDir = Mathf.Sign(enemy.transform.position.x - playerPos.x);
-            if (enemyDir != mouseDir) continue; 
+            if (enemyDir != mouseDir) continue;
 
             if (distToPlayer < bestPlayerDist)
             {
@@ -218,7 +223,6 @@ public class PlayerCombat : MonoBehaviour
         if (isAttacking) return;
         if (playerController == null) return;
         if (playerController.IsGrounded) return;
-        if (playerController.IsDashing) return;
         if (playerController.IsDashAttacking) return;
 
         if (Input.GetKeyDown(KeyCode.LeftControl))

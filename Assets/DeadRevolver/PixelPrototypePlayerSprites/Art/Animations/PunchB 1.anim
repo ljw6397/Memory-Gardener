@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HitDamage
+  m_Name: PunchB 1
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,17 +21,19 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 2184587add02f0a4d88e68e86cbc2961, type: 3}
-    - time: 0.071428575
-      value: {fileID: 21300000, guid: bc79f97d65ce31b488ff779d8f12c884, type: 3}
-    - time: 0.14285715
-      value: {fileID: 21300000, guid: 1289375987a2e77429c5844d7cc48a3c, type: 3}
+      value: {fileID: 21300000, guid: 0c58b8c1ab81e964099bb139bdd69317, type: 3}
+    - time: 0.0625
+      value: {fileID: 21300000, guid: 45f614e74bc2d0343b09614c74a6dd59, type: 3}
+    - time: 0.125
+      value: {fileID: 21300000, guid: 334e58abe1fdb7347881abde33d1c5f1, type: 3}
+    - time: 0.1875
+      value: {fileID: 21300000, guid: bf240b5ce9b935241893a7d8656e3ba9, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
     flags: 2
-  m_SampleRate: 14
+  m_SampleRate: 16
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -48,15 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 2184587add02f0a4d88e68e86cbc2961, type: 3}
-    - {fileID: 21300000, guid: bc79f97d65ce31b488ff779d8f12c884, type: 3}
-    - {fileID: 21300000, guid: 1289375987a2e77429c5844d7cc48a3c, type: 3}
+    - {fileID: 21300000, guid: 0c58b8c1ab81e964099bb139bdd69317, type: 3}
+    - {fileID: 21300000, guid: 45f614e74bc2d0343b09614c74a6dd59, type: 3}
+    - {fileID: 21300000, guid: 334e58abe1fdb7347881abde33d1c5f1, type: 3}
+    - {fileID: 21300000, guid: bf240b5ce9b935241893a7d8656e3ba9, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.21428573
+    m_StopTime: 0.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -75,4 +78,25 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.0625
+    functionName: AnimEvent_HitboxOn
+    data: B
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.125
+    functionName: AnimEvent_ComboStepFinished
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.1875
+    functionName: AnimEvent_HitboxOff
+    data: B
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

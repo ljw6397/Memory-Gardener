@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [Header("Health")]
     public int maxHealth = 30;
-    private int currentHealth;
+    protected int currentHealth;
 
     [Header("Knockback")]
     public float knockbackDuration = 0.15f;
@@ -16,14 +16,27 @@ public class Enemy : MonoBehaviour
     private float hitFlashTimer = 0f;
     private Color originalColor;
 
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    [Header("Targeting (ëª¨ë“  ëª¬ìŠ¤í„° ê³µí†µ â€” í•œë²ˆ ê°ì§€í•˜ë©´ ì˜êµ¬ íƒ€ê²Ÿ)")]
+    public float detectionRadius = 5f;
+
+    protected Rigidbody2D rb;
+    protected SpriteRenderer spriteRenderer;
+    protected Animator animator;
+
+    protected Transform target;
+    protected PlayerHealth targetHealth; // â˜… ì¶”ê°€: íƒ€ê²Ÿ(í”Œë ˆì´ì–´) ìƒì‚¬ í™•ì¸ìš©
+
+    // â˜… ë³€ê²½: íƒ€ê²Ÿì´ ì£½ì–´ìžˆìœ¼ë©´ ìžë™ìœ¼ë¡œ falseê°€ ë¨ â†’ ìžì‹ AIì˜ "íƒ€ê²Ÿ ì—†ìœ¼ë©´ ë°°íšŒ" ë¡œì§ì´ ê·¸ëŒ€ë¡œ ìž¬ì‚¬ìš©ë¨
+    public bool HasTarget => target != null && (targetHealth == null || !targetHealth.IsDead);
+    public Transform Target => target;
+    public bool FacingRight => spriteRenderer != null && !spriteRenderer.flipX;
 
     private bool isDead = false;
     public bool IsDead => isDead;
 
-    void Start()
+    public bool IsKnockedBack => knockbackTimer > 0f;
+
+    protected virtual void Start()
     {
         currentHealth = maxHealth;
 
@@ -34,30 +47,60 @@ public class Enemy : MonoBehaviour
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (isDead) return;
 
-        if (knockbackTimer > 0f)
+        HandleKnockback();
+        HandleHitFlash();
+        TryAcquireTarget();
+    }
+
+    void HandleKnockback()
+    {
+        if (knockbackTimer <= 0f) return;
+
+        knockbackTimer -= Time.deltaTime;
+
+        if (rb != null)
+            rb.linearVelocity = new Vector2(currentKnockback.x, rb.linearVelocity.y);
+
+        if (knockbackTimer <= 0f && rb != null)
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+    }
+
+    void HandleHitFlash()
+    {
+        if (hitFlashTimer <= 0f) return;
+
+        hitFlashTimer -= Time.deltaTime;
+        if (hitFlashTimer <= 0f && spriteRenderer != null)
+            spriteRenderer.color = originalColor;
+    }
+
+    void TryAcquireTarget()
+    {
+        if (target != null) return;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        float dist = Vector2.Distance(transform.position, player.transform.position);
+        if (dist <= detectionRadius)
         {
-            knockbackTimer -= Time.deltaTime;
-
-            // ³Ë¹é Áö¼Ó½Ã°£ µ¿¾È¿£ X(¼öÆò)¸¸ °è¼Ó ¹Ð¾îÁÖ°í, Y(¼öÁ÷)´Â Áß·ÂÀÌ ÀÚ¿¬½º·´°Ô Ã³¸®ÇÏ°Ô ³ÀµÒ
-            if (rb != null)
-                rb.linearVelocity = new Vector2(currentKnockback.x, rb.linearVelocity.y);
-
-            if (knockbackTimer <= 0f && rb != null)
-            {
-                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // X¸¸ ¸ØÃã, Y´Â °è¼Ó Áß·Â µû¶ó ÀÚ¿¬½º·´°Ô
-            }
+            target = player.transform;
+            targetHealth = player.GetComponent<PlayerHealth>(); // â˜… ì¶”ê°€
+            OnTargetAcquired();
         }
+    }
 
-        if (hitFlashTimer > 0f)
-        {
-            hitFlashTimer -= Time.deltaTime;
-            if (hitFlashTimer <= 0f && spriteRenderer != null)
-                spriteRenderer.color = originalColor;
-        }
+    protected virtual void OnTargetAcquired() { }
+
+    protected void FaceTarget()
+    {
+        if (target == null || spriteRenderer == null) return;
+        bool faceRight = target.position.x >= transform.position.x;
+        spriteRenderer.flipX = !faceRight;
     }
 
     public void TakeDamage(int amount, Vector2 knockback)
@@ -69,7 +112,6 @@ public class Enemy : MonoBehaviour
         currentKnockback = knockback;
         knockbackTimer = knockbackDuration;
 
-        // ¸Â´Â ¼ø°£ X, Y µÑ ´Ù ÇÑ ¹ø¿¡ Àû¿ë ¡æ À§·Î Æ¨±â¸é¼­ ¿·À¸·Îµµ ¹Ð·Á³ª´Â ±ËÀû ½ÃÀÛÁ¡
         if (rb != null)
             rb.linearVelocity = knockback;
 
@@ -81,15 +123,24 @@ public class Enemy : MonoBehaviour
 
         if (animator != null) animator.SetTrigger("Hit");
 
+        OnHit();
+
         if (currentHealth <= 0) Die();
     }
 
-    void Die()
+    protected virtual void OnHit() { }
+
+    protected virtual void Die()
     {
         isDead = true;
 
         if (animator != null) animator.SetTrigger("Die");
-        if (rb != null) rb.linearVelocity = Vector2.zero;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
 
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
