@@ -46,7 +46,6 @@ public class Grunt1 : Enemy
         if (IsDead) return;
         if (IsKnockedBack) return;
 
-        // ★ 추가: 공격 도중 타겟(플레이어)이 죽었으면 그 즉시 공격 중단
         if (isAttacking && !HasTarget)
         {
             CancelAttack();
@@ -212,9 +211,8 @@ public class Grunt1 : Enemy
     {
         CancelAttack();
         state = State.Exhausted;
-        exhaustedTimer = exhaustionDuration * 0.5f;
+        exhaustedTimer = exhaustionDuration; // ★ 변경: 0.5배 → 전체값으로. 맞을 때마다 쿨타임이 항상 풀로 리셋됨
     }
-
     void SetVelocityX(float x)
     {
         rb.linearVelocity = new Vector2(x, rb.linearVelocity.y);

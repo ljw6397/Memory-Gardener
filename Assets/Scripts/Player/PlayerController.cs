@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private PlayerCombat playerCombat;
-    private PlayerHealth playerHealth; // ★ 추가
+    private PlayerHealth playerHealth;
 
     public float walkSpeed = 3f;
     public float runSpeed = 7f;
@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     public float enemyCheckVerticalOffset = 1f;
     public float dashBlockCheckDistance = 0.4f;
 
+    [Header("Hit Backdash")]
+    public float backDashSpeed = 12f;
+    public float backDashDuration = 0.25f;
+
     private bool isGrounded;
     public bool IsGrounded => isGrounded;
     private bool isGroundedAnim;
@@ -68,13 +72,17 @@ public class PlayerController : MonoBehaviour
     public System.Action OnSlamLand;
     public System.Action OnSlamRecoveryComplete;
 
+    private bool isBackDashing = false;
+    public bool IsBackDashing => isBackDashing;
+    private float backDashTimer = 0f;
+
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         playerCombat = GetComponent<PlayerCombat>();
-        playerHealth = GetComponent<PlayerHealth>(); // ★ 추가
+        playerHealth = GetComponent<PlayerHealth>();
         normalGravity = rb.gravityScale;
 
         if (mainCamera == null) mainCamera = Camera.main;
@@ -98,7 +106,6 @@ public class PlayerController : MonoBehaviour
         return hit.collider != null;
     }
 
-    // ★ 추가: 피격/사망 시 진행 중이던 대시어택, 내려찍기를 그 즉시 강제로 정지
     public void ForceCancelActions()
     {
         isDashAttacking = false;
@@ -107,12 +114,29 @@ public class PlayerController : MonoBehaviour
         isSlamming = false;
         slamLanded = false;
 
+        isBackDashing = false;
+
         rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
         if (animator != null)
         {
             animator.SetBool("IsSlamming", false);
             animator.SetBool("SlamRecoveryDone", true);
+            animator.SetBool("IsBackDashing", false);
+        }
+    }
+
+    public void StartBackDash(float direction)
+    {
+        isBackDashing = true;
+        backDashTimer = backDashDuration;
+
+        rb.linearVelocity = new Vector2(direction * backDashSpeed, rb.linearVelocity.y);
+
+        if (animator != null)
+        {
+            animator.SetBool("IsBackDashing", true);
+            animator.Play("BackDash", 0, 0f);
         }
     }
 
@@ -120,22 +144,46 @@ public class PlayerController : MonoBehaviour
     {
         CheckGrounded();
 
-        // ★ 추가: 매 프레임 히트스턴/사망 여부를 Animator에 전달 (Any State 경합 방지용)
         bool hitStunnedNow = playerHealth != null && (playerHealth.IsDead || playerHealth.IsHitStunned);
         animator.SetBool("HitStunned", hitStunnedNow);
 
-        // ★ 추가: 사망 시 완전히 조작 불가. 좌우 이동만 멈추고 낙하는 자연스럽게 유지
         if (playerHealth != null && playerHealth.IsDead)
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            animator.SetFloat("Speed", 0f);
             animator.SetBool("Grounded", isGroundedAnim);
             animator.SetFloat("VelocityY", rb.linearVelocity.y);
             return;
         }
 
-        // ★ 추가: 히트스턴 중엔 넉백 속도는 PlayerHealth가 처리하므로 여기서는 아무 것도 안 건드림
         if (playerHealth != null && playerHealth.IsHitStunned)
         {
+            return;
+        }
+
+        if (isBackDashing)
+        {
+            backDashTimer -= Time.deltaTime;
+
+            float dashDir = rb.linearVelocity.x >= 0 ? 1f : -1f;
+            Vector2 checkDir = dashDir > 0 ? Vector2.right : Vector2.left;
+
+            if (IsBlockedByEnemy(checkDir, dashBlockCheckDistance))
+            {
+                isBackDashing = false;
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            }
+            else if (backDashTimer <= 0f)
+            {
+                isBackDashing = false;
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(dashDir * backDashSpeed, rb.linearVelocity.y);
+            }
+
+            if (!isBackDashing) animator.SetBool("IsBackDashing", false);
+
             animator.SetBool("Grounded", isGroundedAnim);
             animator.SetFloat("VelocityY", rb.linearVelocity.y);
             return;
@@ -244,7 +292,7 @@ public class PlayerController : MonoBehaviour
     {
         if (mainCamera == null) return;
         if (isSlamming) return;
-        if (playerCombat != null && playerCombat.IsAttacking) return;
+        if (playerCombat != null && playerCombat.IsBusy) return; // ★ 변경: IsAttacking → IsBusy
 
         float moveInput = Input.GetAxisRaw("Horizontal");
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -275,7 +323,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleJump()
     {
-        if (playerCombat != null && playerCombat.IsAttacking) return;
+        if (playerCombat != null && playerCombat.IsBusy) return; // ★ 변경: IsAttacking → IsBusy
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -297,7 +345,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMove()
     {
-        if (playerCombat != null && playerCombat.IsAttacking)
+        if (playerCombat != null && playerCombat.IsBusy) // ★ 변경: IsAttacking → IsBusy
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             animator.SetFloat("Speed", 0f);
@@ -361,6 +409,12 @@ public class PlayerController : MonoBehaviour
             float dir = facingRight ? 1f : -1f;
             rb.linearVelocity = new Vector2(dir * dashAttackBurstSpeed, rb.linearVelocity.y);
         }
+    }
+
+    public void FaceAwayFromHit(float knockbackDirX)
+    {
+        facingRight = knockbackDirX < 0f;
+        spriteRenderer.flipX = !facingRight;
     }
 
     public void StartSlamPhysics()

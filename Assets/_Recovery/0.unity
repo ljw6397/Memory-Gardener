@@ -303,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 279958134}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.35, y: -5.3, z: 0}
+  m_LocalPosition: {x: 10.88, y: -5.3, z: 0}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -434,7 +434,7 @@ MonoBehaviour:
   patrolRange: 3
   idlePauseMin: 1
   idlePauseMax: 2.5
-  attackRange: 1.3
+  attackRange: 1
   exhaustionDuration: 1.2
   punchHitboxA: {fileID: 1703261841}
   punchHitboxB: {fileID: 667435936}
@@ -1005,8 +1005,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.009565413, y: 0.7066119}
-  m_Size: {x: 0.78921854, y: 1.4696178}
+  m_Offset: {x: -0.009565353, y: 0.7066119}
+  m_Size: {x: 0.5143035, y: 1.4696181}
   m_Direction: 0
 --- !u!50 &682296334
 Rigidbody2D:
@@ -1168,15 +1168,13 @@ MonoBehaviour:
   slamInitialSpeed: 1
   slamAcceleration: 40
   slamRecoveryTime: 0.3
-  enemyCheckDistance: 0.6
+  enemyCheckDistance: 0.3
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   enemyCheckHeight: 5
   enemyCheckVerticalOffset: 1
   dashBlockCheckDistance: 0.4
-  backDashSpeed: 12
-  backDashDuration: 0.25
 --- !u!114 &682296339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,7 +1190,6 @@ MonoBehaviour:
   maxComboStep: 3
   comboGraceWindow: 0.95
   comboGapDelay: 0.08
-  postAttackRecovery: 0.2
   punchHitboxA: {fileID: 1385229067}
   punchHitboxB: {fileID: 1740233122}
   punchHitboxC: {fileID: 939435134}
@@ -1210,12 +1207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
-  hitStunDuration: 0.1
+  hitStunDuration: 0.3
   hitFlashDuration: 0.1
-  slowMoTimeScale: 0.17
-  backdashInputWindow: 0.3
-  slowMoRecoverySpeed: 1.5
-  backdashKey: 32
 --- !u!1 &939435132
 GameObject:
   m_ObjectHideFlags: 0
