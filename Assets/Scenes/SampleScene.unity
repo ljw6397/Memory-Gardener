@@ -1167,8 +1167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   walkSpeed: 3
-  runSpeed: 7
-  jumpForce: 10
+  runSpeed: 8
+  jumpForce: 9
   moveInputBuffer: 0.1
   groundCheck: {fileID: 2010310572}
   groundCheckDistance: 0.245
@@ -1176,8 +1176,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  fallGravityMultiplier: 2.5
-  lowJumpMultiplier: 2
+  fallGravityMultiplier: 3.2
+  riseGravityMultiplier: 1.4
   mainCamera: {fileID: 0}
   dashAttackBurstSpeed: 14
   dashAttackBurstDuration: 0.3
@@ -1187,12 +1187,19 @@ MonoBehaviour:
   slamInitialSpeed: 1
   slamAcceleration: 40
   slamRecoveryTime: 0.3
-  enemyCheckDistance: 0.6
+  shockwaveRadius: 4
+  shockwaveDamage: 8
+  shockwaveKnockbackForce: 6
+  shockwaveKnockbackUpward: 2
+  enemyDamageLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  enemyCheckDistance: 0.72
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  enemyCheckHeight: 5
-  enemyCheckVerticalOffset: 1
+  enemyCheckHeight: 2.71
+  enemyCheckVerticalOffset: 1.15
   dashBlockCheckDistance: 0.4
   backDashSpeed: 12
   backDashDuration: 0.25

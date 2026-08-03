@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Feel")]
     public float fallGravityMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    public float riseGravityMultiplier = 1.6f;
 
     [Header("Mouse Aim")]
     public Camera mainCamera;
@@ -37,6 +37,13 @@ public class PlayerController : MonoBehaviour
     public float slamInitialSpeed = 1f;
     public float slamAcceleration = 40f;
     public float slamRecoveryTime = 0.3f;
+
+    [Header("Ground Pound - Shockwave (착지 시 광역 데미지)")] 
+    public float shockwaveRadius = 4f;     
+    public int shockwaveDamage = 8;
+    public float shockwaveKnockbackForce = 6f;  
+    public float shockwaveKnockbackUpward = 2f; 
+    public LayerMask enemyDamageLayer;          
 
     [Header("Enemy Collision")]
     public float enemyCheckDistance = 0.15f;
@@ -140,6 +147,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void ApplyGroundSlamShockwave()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, shockwaveRadius, enemyDamageLayer);
+
+        foreach (Collider2D hit in hits)
+        {
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy == null || enemy.IsDead) continue;
+
+            // 플레이어 기준 왼쪽/오른쪽 판단: 적이 플레이어보다 왼쪽이면 -1(왼쪽으로 날아감), 오른쪽이면 +1(오른쪽으로)
+            float dir = (hit.transform.position.x >= transform.position.x) ? 1f : -1f;
+
+            Vector2 knockback = new Vector2(dir * shockwaveKnockbackForce, shockwaveKnockbackUpward);
+            enemy.TakeDamage(shockwaveDamage, knockback);
+        }
+    }
+
     void Update()
     {
         CheckGrounded();
@@ -194,6 +218,7 @@ public class PlayerController : MonoBehaviour
             slamLanded = true;
             slamRecoveryTimer = slamRecoveryTime;
             OnSlamLand?.Invoke();
+            ApplyGroundSlamShockwave(); // ★ 추가: 카메라 흔들림 트리거와 같은 타이밍에 광역 데미지 적용
         }
 
         if (isSlamming && slamLanded)
@@ -292,7 +317,7 @@ public class PlayerController : MonoBehaviour
     {
         if (mainCamera == null) return;
         if (isSlamming) return;
-        if (playerCombat != null && playerCombat.IsBusy) return; // ★ 변경: IsAttacking → IsBusy
+        if (playerCombat != null && playerCombat.IsBusy) return;
 
         float moveInput = Input.GetAxisRaw("Horizontal");
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -323,7 +348,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleJump()
     {
-        if (playerCombat != null && playerCombat.IsBusy) return; // ★ 변경: IsAttacking → IsBusy
+        if (playerCombat != null && playerCombat.IsBusy) return;
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -337,15 +362,15 @@ public class PlayerController : MonoBehaviour
     {
         if (rb.linearVelocity.y < 0)
             rb.gravityScale = normalGravity * fallGravityMultiplier;
-        else if (rb.linearVelocity.y > 0 && !Input.GetKey(KeyCode.Space))
-            rb.gravityScale = normalGravity * lowJumpMultiplier;
+        else if (rb.linearVelocity.y > 0)
+            rb.gravityScale = normalGravity * riseGravityMultiplier;
         else
             rb.gravityScale = normalGravity;
     }
 
     void HandleMove()
     {
-        if (playerCombat != null && playerCombat.IsBusy) // ★ 변경: IsAttacking → IsBusy
+        if (playerCombat != null && playerCombat.IsBusy)
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             animator.SetFloat("Speed", 0f);
@@ -366,7 +391,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        rb.linearVelocity = new Vector2(moveInput * currentSpeed, rb.linearVelocity.y);
+        float targetVelocityX = moveInput * currentSpeed;
+
+        // ★ 추가: 아주 짧은 가감속 (뚝 끊기는 뻣뻣함만 살짝 부드럽게, 두둥실거리지 않을 정도로만)
+        float accelRate = 40f; // 클수록 즉각 반응(뻣뻣), 작을수록 부드러움(둥실). 40이면 거의 즉각적임
+        float newVelocityX = Mathf.MoveTowards(rb.linearVelocity.x, targetVelocityX, accelRate * Time.deltaTime);
+
+        rb.linearVelocity = new Vector2(newVelocityX, rb.linearVelocity.y);
 
         float rawSpeed = Mathf.Abs(moveInput) * currentSpeed;
         float animSpeed;
@@ -439,5 +470,9 @@ public class PlayerController : MonoBehaviour
         Vector3 gizmoSize = new Vector3(enemyCheckDistance, enemyCheckHeight, 0.1f);
         Gizmos.DrawWireCube(rightCenter, gizmoSize);
         Gizmos.DrawWireCube(leftCenter, gizmoSize);
+
+        // ★ 추가: 슬램 충격파 반경 시각화
+        Gizmos.color = new Color(1f, 0.5f, 0f); // 주황색
+        Gizmos.DrawWireSphere(transform.position, shockwaveRadius);
     }
 }
