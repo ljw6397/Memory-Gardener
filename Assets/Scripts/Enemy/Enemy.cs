@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     public float slamDownMaxSpeed = 30f;
     public float bounceDamping = 0.4f;
     public float bounceMinSpeed = 2f;
-    public int maxBounces = 3;
+    public int maxBounces = 2; // ★ 변경: 말씀하신 "두 번 튕기다가"에 맞춰 기본값 2로
 
     public static System.Action OnSlamBounce;
     public static System.Action OnSlamSettled;
@@ -58,6 +58,8 @@ public class Enemy : MonoBehaviour
     private bool isSlammedDown = false;
     public bool IsSlammedDown => isSlammedDown;
     private int bounceCount = 0;
+    private bool wasGroundedWhenSlamStarted = false; // ★ 추가: 슬램 시작 시점에 이미 땅 위였는지 (=바운스 없이 즉시 박히는 케이스)
+    private bool isBouncing = false; // ★ 추가: 지금 튕겨서 공중에 뜬 상태인지 (착지 판정을 허용할지 결정)
 
     private bool isKnockbackHeld = false;
 
@@ -111,16 +113,45 @@ public class Enemy : MonoBehaviour
 
     void UpdateSlamDown()
     {
-        if (rb.linearVelocity.y <= 0f) // ★ 변경: <= 로 정점에 걸친 순간도 바로 가속
+        // ★ 케이스 1: 슬램 시작부터 이미 땅 위였던 적 → 튕기지 않고 즉시 정착
+        if (wasGroundedWhenSlamStarted)
+        {
+            FinishSlamDown();
+            return;
+        }
+
+        // 낙하/가속 처리 (아래로 향하는 동안만)
+        if (rb.linearVelocity.y < 0f)
         {
             float fallSpeed = Mathf.Abs(rb.linearVelocity.y);
             fallSpeed += slamDownAcceleration * Time.deltaTime;
             fallSpeed = Mathf.Min(fallSpeed, slamDownMaxSpeed);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fallSpeed);
+        }
 
-            if (IsGroundedCheck())
+        bool grounded = IsGroundedCheck();
+
+        if (!isBouncing)
+        {
+            // ★ 핵심: velocity.y가 양수(막 튕겨서 올라가는 중)인 동안은 "공중에 떠서 튕기는 중"으로 표시해두고
+            // 착지 판정 자체를 하지 않음 → 이게 "튕겼는데 바로 또 착지로 오판되는" 문제를 막아줌
+            if (rb.linearVelocity.y > 0f)
             {
-                HandleSlamBounce(fallSpeed);
+                isBouncing = true;
+            }
+            else if (grounded)
+            {
+                // 아직 한 번도 안 튕겼고, 계속 땅에 붙어있는 상태 → 첫 착지
+                HandleSlamBounce(Mathf.Abs(rb.linearVelocity.y));
+            }
+        }
+        else
+        {
+            // 튕겨서 공중에 뜬 상태 → velocity.y가 다시 음수로 바뀌고(정점 찍고 하강 시작) + 실제로 땅에 닿아야만 착지로 인정
+            if (rb.linearVelocity.y <= 0f && grounded)
+            {
+                isBouncing = false;
+                HandleSlamBounce(Mathf.Abs(rb.linearVelocity.y));
             }
         }
     }
@@ -133,6 +164,7 @@ public class Enemy : MonoBehaviour
         if (bounceSpeed > bounceMinSpeed && bounceCount <= maxBounces)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, bounceSpeed);
+            isBouncing = true; // ★ 추가: 튕겨 올린 직후 즉시 "튕기는 중" 상태로 표시
             OnSlamBounce?.Invoke();
         }
         else
@@ -146,6 +178,7 @@ public class Enemy : MonoBehaviour
         isSlammedDown = false;
         isKnockbackHeld = false;
         bounceCount = 0;
+        isBouncing = false;
         rb.linearVelocity = new Vector2(0f, 0f);
 
         if (animator != null)
@@ -270,9 +303,12 @@ public class Enemy : MonoBehaviour
             isSlammedDown = true;
             isKnockbackHeld = false;
             bounceCount = 0;
+            isBouncing = false;
             knockbackTimer = 0f;
 
-            // ★ 추가: 슬램 판정된 순간, knockback 벡터의 부호와 무관하게 무조건 아래로만 꽂히도록 강제
+            // ★ 핵심: 슬램이 시작되는 이 순간, 이미 땅에 붙어있는지(=원래 땅 위였는지) 미리 기록해둠
+            wasGroundedWhenSlamStarted = IsGroundedCheck();
+
             if (rb != null)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, -Mathf.Abs(knockback.y));

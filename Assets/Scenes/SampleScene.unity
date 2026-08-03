@@ -437,7 +437,7 @@ MonoBehaviour:
   slamDownThreshold: 8
   slamDownAcceleration: 60
   slamDownMaxSpeed: 30
-  bounceDamping: 0.4
+  bounceDamping: 0.03
   bounceMinSpeed: 2
   maxBounces: 2
   hitFlashDuration: 0.1
@@ -698,7 +698,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6.984375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -758,11 +758,11 @@ MonoBehaviour:
   shakeDuration: 0.4
   shakeMagnitudePixels: 8
   hitShakeDuration: 0.2
-  hitShakeMagnitudeMin: 3
-  hitShakeMagnitudeMax: 6
-  playerHitShakeDuration: 0.15
-  playerHitShakeMagnitudeMin: 2
-  playerHitShakeMagnitudeMax: 3
+  hitShakeMagnitudeMin: 5
+  hitShakeMagnitudeMax: 10
+  playerHitShakeDuration: 0.3
+  playerHitShakeMagnitudeMin: 3
+  playerHitShakeMagnitudeMax: 6
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,7 +917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPunchHitbox
   damage: 5
-  knockbackForce: 1.5
+  knockbackForce: 0.9
   knockbackUpward: 0
 --- !u!61 &667435937
 BoxCollider2D:
@@ -1518,7 +1518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
   damage: 5
-  knockbackForce: 0.6
+  knockbackForce: 0
   knockbackUpward: 0
 --- !u!61 &1385229068
 BoxCollider2D:
@@ -1815,7 +1815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPunchHitbox
   damage: 5
-  knockbackForce: 1
+  knockbackForce: 0.7
   knockbackUpward: 0
 --- !u!61 &1703261842
 BoxCollider2D:
@@ -1909,7 +1909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
   damage: 10
-  knockbackForce: 0.8
+  knockbackForce: 0
   knockbackUpward: 0
 --- !u!61 &1740233123
 BoxCollider2D:
