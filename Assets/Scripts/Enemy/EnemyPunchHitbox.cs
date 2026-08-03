@@ -50,7 +50,9 @@ public class EnemyPunchHitbox : MonoBehaviour
         if (playerHealth == null) return;
 
         float dir = (owner != null && owner.FacingRight) ? 1f : -1f;
-        Vector2 knockback = new Vector2(dir, knockbackUpward).normalized * knockbackForce;
+
+        // ★ 변경: normalized 제거 (위와 동일한 이유)
+        Vector2 knockback = new Vector2(dir * knockbackForce, knockbackUpward);
 
         playerHealth.TakeDamage(damage, knockback);
     }

@@ -11,6 +11,12 @@ public class Enemy : MonoBehaviour
     private float knockbackTimer = 0f;
     private Vector2 currentKnockback;
 
+    [Header("Airborne Knockback")]
+    public Transform groundCheck;
+    public float groundCheckDistance = 0.15f;
+    public LayerMask groundLayer;
+    public float airborneKnockbackThreshold = 3f;
+
     [Header("Hit Feedback")]
     public float hitFlashDuration = 0.1f;
     private float hitFlashTimer = 0f;
@@ -24,9 +30,8 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
 
     protected Transform target;
-    protected PlayerHealth targetHealth; // ★ 추가: 타겟(플레이어) 생사 확인용
+    protected PlayerHealth targetHealth;
 
-    // ★ 변경: 타겟이 죽어있으면 자동으로 false가 됨 → 자식 AI의 "타겟 없으면 배회" 로직이 그대로 재사용됨
     public bool HasTarget => target != null && (targetHealth == null || !targetHealth.IsDead);
     public Transform Target => target;
     public bool FacingRight => spriteRenderer != null && !spriteRenderer.flipX;
@@ -35,6 +40,11 @@ public class Enemy : MonoBehaviour
     public bool IsDead => isDead;
 
     public bool IsKnockedBack => knockbackTimer > 0f;
+
+    private bool isAirborneKnockback = false;
+    public bool IsAirborneKnockback => isAirborneKnockback;
+
+    private bool isKnockbackHeld = false; // ★ 추가: 지금 "누워있는" 정지 상태인지
 
     protected virtual void Start()
     {
@@ -45,15 +55,54 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
 
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
+
+        if (groundCheck == null)
+        {
+            Debug.LogWarning($"[{name}] Enemy의 Ground Check가 비어있습니다! 발밑에 자식 오브젝트를 만들어 연결해주세요.");
+        }
     }
 
     protected virtual void Update()
     {
+        HandleHitFlash();
+
         if (isDead) return;
 
+        if (isAirborneKnockback)
+        {
+            if (isKnockbackHeld && rb.linearVelocity.y <= 0f && IsGroundedCheck())
+            {
+                isAirborneKnockback = false;
+                isKnockbackHeld = false;
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+                if (animator != null)
+                {
+                    animator.speed = 1f; 
+                }
+            }
+            return;
+        }
+
         HandleKnockback();
-        HandleHitFlash();
         TryAcquireTarget();
+    }
+
+    public void AnimEvent_KnockbackHold()
+    {
+        if (!isAirborneKnockback) return; 
+
+        isKnockbackHeld = true;
+        if (animator != null)
+        {
+            animator.speed = 0f; 
+        }
+    }
+
+    bool IsGroundedCheck()
+    {
+        if (groundCheck == null) return true;
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
     }
 
     void HandleKnockback()
@@ -89,7 +138,7 @@ public class Enemy : MonoBehaviour
         if (dist <= detectionRadius)
         {
             target = player.transform;
-            targetHealth = player.GetComponent<PlayerHealth>(); // ★ 추가
+            targetHealth = player.GetComponent<PlayerHealth>();
             OnTargetAcquired();
         }
     }
@@ -106,6 +155,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int amount, Vector2 knockback)
     {
         if (isDead) return;
+        if (isAirborneKnockback) return;
 
         currentHealth -= amount;
 
@@ -121,11 +171,30 @@ public class Enemy : MonoBehaviour
             hitFlashTimer = hitFlashDuration;
         }
 
-        if (animator != null) animator.SetTrigger("Hit");
-
         OnHit();
 
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+
+        if (knockback.y >= airborneKnockbackThreshold)
+        {
+            isAirborneKnockback = true;
+            isKnockbackHeld = false; 
+            knockbackTimer = 0f;
+
+            if (animator != null)
+            {
+                animator.speed = 1f; 
+                animator.Play("Knockback", 0, 0f);
+            }
+        }
+        else
+        {
+            if (animator != null) animator.SetTrigger("Hit");
+        }
     }
 
     protected virtual void OnHit() { }
@@ -133,8 +202,14 @@ public class Enemy : MonoBehaviour
     protected virtual void Die()
     {
         isDead = true;
+        isAirborneKnockback = false;
+        isKnockbackHeld = false;
 
-        if (animator != null) animator.SetTrigger("Die");
+        if (animator != null)
+        {
+            animator.speed = 1f;
+            animator.SetTrigger("Die");
+        }
 
         if (rb != null)
         {
@@ -146,5 +221,10 @@ public class Enemy : MonoBehaviour
         if (col != null) col.enabled = false;
 
         Destroy(gameObject, 1f);
+    }
+
+    public void AnimEvent_KnockbackFinished()
+    {
+        if (animator != null) animator.Play("Idle", 0, 0f);
     }
 }

@@ -45,6 +45,7 @@ public class Grunt1 : Enemy
 
         if (IsDead) return;
         if (IsKnockedBack) return;
+        if (IsAirborneKnockback) return; // ★ 추가: 공중에 뜬 동안엔 AI 로직(순찰/추격/공격) 전부 정지
 
         if (isAttacking && !HasTarget)
         {
@@ -211,8 +212,9 @@ public class Grunt1 : Enemy
     {
         CancelAttack();
         state = State.Exhausted;
-        exhaustedTimer = exhaustionDuration; // ★ 변경: 0.5배 → 전체값으로. 맞을 때마다 쿨타임이 항상 풀로 리셋됨
+        exhaustedTimer = exhaustionDuration;
     }
+
     void SetVelocityX(float x)
     {
         rb.linearVelocity = new Vector2(x, rb.linearVelocity.y);

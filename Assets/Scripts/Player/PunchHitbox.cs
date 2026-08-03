@@ -54,10 +54,13 @@ public class PunchHitbox : MonoBehaviour
         if (enemy == null) return;
 
         float dir = (playerController != null && playerController.FacingRight) ? 1f : -1f;
-        Vector2 knockback = new Vector2(dir, knockbackUpward).normalized * knockbackForce;
+
+        // ★ 변경: normalized 제거. 이제 knockbackForce(옆으로 미는 힘)와 knockbackUpward(위로 뜨는 힘)가
+        // 서로 영향 안 주고 완전히 독립적으로 작동함. knockbackUpward를 아무리 올려도 상한선이 없어짐.
+        Vector2 knockback = new Vector2(dir * knockbackForce, knockbackUpward);
 
         enemy.TakeDamage(damage, knockback);
 
-        OnEnemyHit?.Invoke(); 
+        OnEnemyHit?.Invoke();
     }
 }

@@ -12,10 +12,13 @@ public class PlayerHealth : MonoBehaviour
     public float hitFlashDuration = 0.1f;
 
     [Header("Hit Slow-Mo / Backdash Escape")]
-    public float slowMoTimeScale = 0.05f;
+    public float slowMoTimeScale = 0.15f;
     public float backdashInputWindow = 1f;
     public float slowMoRecoverySpeed = 1.5f;
     public KeyCode backdashKey = KeyCode.Space;
+
+    [Header("Airborne Knockback")]
+    public float airborneKnockbackThreshold = 3f; // ★ 추가: knockback.y가 이 값 이상이면 "떴다"로 판정
 
     private float hitStunTimer = 0f;
     private Vector2 currentKnockback;
@@ -28,6 +31,8 @@ public class PlayerHealth : MonoBehaviour
     private bool recoveringTimeScale = false;
     private float baseFixedDeltaTime;
 
+    private bool isAirborneKnockback = false; // ★ 추가
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -36,10 +41,7 @@ public class PlayerHealth : MonoBehaviour
 
     private bool isDead = false;
     public bool IsDead => isDead;
-
-    // ★ 변경: awaitingBackdash 동안만 "조작 불가"로 취급.
-    // hitStunTimer는 이제 "실패 후 슬라이드"용 용도로만 쓰이고, PlayerController가 참조하는 건 이 프로퍼티 하나뿐.
-    public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash;
+    public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback; // ★ 변경
 
     void Start()
     {
@@ -62,15 +64,21 @@ public class PlayerHealth : MonoBehaviour
         Time.fixedDeltaTime = baseFixedDeltaTime;
     }
 
-    // ★ 핵심 변경: LateUpdate로 옮김.
-    // Unity는 모든 오브젝트의 Update()가 다 끝난 뒤에 LateUpdate()를 실행하는 걸 보장하기 때문에,
-    // "PlayerController.Update()가 먼저 도는지 나중에 도는지" 경합 자체가 사라짐.
-    // 이 프레임에 스페이스를 눌러 BackDash로 전환했다면, PlayerController가 이미 자기 Update를
-    // 실행한 뒤이므로 그 프레임의 애니메이션 판단을 건드릴 일이 없고, 다음 프레임부터는
-    // PlayerController가 isBackDashing=true를 보고 정상적으로 그 블록을 타게 됨.
     void LateUpdate()
     {
+        HandleHitFlash();
+
         if (isDead) return;
+
+        if (isAirborneKnockback)
+        {
+            if (rb != null && rb.linearVelocity.y <= 0f && playerController != null && playerController.IsGrounded)
+            {
+                isAirborneKnockback = false;
+                if (animator != null) animator.Play("Idle", 0, 0f);
+            }
+            return;
+        }
 
         HandleBackdashWindow();
         HandleTimeScaleRecovery();
@@ -85,13 +93,15 @@ public class PlayerHealth : MonoBehaviour
             if (hitStunTimer <= 0f && rb != null)
                 rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
         }
+    }
 
-        if (hitFlashTimer > 0f)
-        {
-            hitFlashTimer -= Time.deltaTime;
-            if (hitFlashTimer <= 0f && spriteRenderer != null)
-                spriteRenderer.color = originalColor;
-        }
+    void HandleHitFlash()
+    {
+        if (hitFlashTimer <= 0f) return;
+
+        hitFlashTimer -= Time.deltaTime;
+        if (hitFlashTimer <= 0f && spriteRenderer != null)
+            spriteRenderer.color = originalColor;
     }
 
     void HandleBackdashWindow()
@@ -131,6 +141,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
         if (awaitingBackdash) return;
+        if (isAirborneKnockback) return; // ★ 추가: 공중 넉백 중엔 새 히트 무시 (필요하면 나중에 콤보 확장 가능)
 
         currentHealth -= amount;
 
@@ -147,12 +158,6 @@ public class PlayerHealth : MonoBehaviour
             hitFlashTimer = hitFlashDuration;
         }
 
-        if (animator != null)
-        {
-            animator.SetFloat("Speed", 0f);
-            animator.Play("Hit", 0, 0f);
-        }
-
         playerCombat?.CancelCombo();
         playerController?.ForceCancelActions();
 
@@ -160,6 +165,24 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
             return;
+        }
+
+        // ★ 추가: 위로 띄우는 공격이면 슬로우모션/백대시 대신 Knockback 애니메이션 경로로
+        if (knockback.y >= airborneKnockbackThreshold)
+        {
+            isAirborneKnockback = true;
+            if (animator != null)
+            {
+                animator.SetFloat("Speed", 0f);
+                animator.Play("Knockback", 0, 0f);
+            }
+            return;
+        }
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.Play("Hit", 0, 0f);
         }
 
         EnterHitSlowMo(knockback);
@@ -196,6 +219,7 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         hitStunTimer = 0f;
         awaitingBackdash = false;
+        isAirborneKnockback = false; 
 
         recoveringTimeScale = false;
         Time.timeScale = 1f;
