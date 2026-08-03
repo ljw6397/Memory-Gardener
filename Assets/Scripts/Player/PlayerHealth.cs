@@ -2,10 +2,13 @@
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health")]
-    public int maxHealth = 100;
-    private int currentHealth;
-    public int CurrentHealth => currentHealth;
+    [Header("Health (하트 시스템: 하트 1개 = 2칸, 맞으면 무조건 반 칸씩 깎임)")]
+    public int maxHearts = 3;
+    private int maxSegments;
+    private int currentSegments;
+    public int MaxSegments => maxSegments;
+    public int CurrentSegments => currentSegments;
+    public System.Action<int, int> OnHealthChanged;
 
     [Header("Hit Reaction")]
     public float hitStunDuration = 0.3f;
@@ -43,9 +46,10 @@ public class PlayerHealth : MonoBehaviour
     public bool IsDead => isDead;
     public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback; // ★ 변경
 
-    void Start()
+    void Awake()
     {
-        currentHealth = maxHealth;
+        maxSegments = maxHearts * 2;
+        currentSegments = maxSegments;
 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -143,7 +147,8 @@ public class PlayerHealth : MonoBehaviour
         if (awaitingBackdash) return;
         if (isAirborneKnockback) return; // ★ 추가: 공중 넉백 중엔 새 히트 무시 (필요하면 나중에 콤보 확장 가능)
 
-        currentHealth -= amount;
+        currentSegments = Mathf.Max(0, currentSegments - 1);
+        OnHealthChanged?.Invoke(currentSegments, maxSegments);
 
         currentKnockback = knockback;
 
@@ -161,7 +166,7 @@ public class PlayerHealth : MonoBehaviour
         playerCombat?.CancelCombo();
         playerController?.ForceCancelActions();
 
-        if (currentHealth <= 0)
+        if (currentSegments <= 0)
         {
             Die();
             return;

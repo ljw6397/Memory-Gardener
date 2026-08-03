@@ -931,6 +931,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3256993366012738630, guid: 536627d770f575f448d57e2c30787ad6, type: 3}
+      propertyPath: orthographic size
+      value: 2.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256993366012738630, guid: 536627d770f575f448d57e2c30787ad6, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
       value: 0
       objectReference: {fileID: 0}
@@ -2304,6 +2308,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 62.006897
       objectReference: {fileID: 0}
+    - target: {fileID: 953114532602088797, guid: f9efdddb24d47bd49825680f6ea79ab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2724720997848555117, guid: f9efdddb24d47bd49825680f6ea79ab6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3366,6 +3374,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3739,6 +3748,10 @@ PrefabInstance:
     - target: {fileID: 5063045677092466759, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
       propertyPath: m_Name
       value: DemoManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6524754252724894527, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 132.3
       objectReference: {fileID: 0}
     - target: {fileID: 9184858096285192602, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
       propertyPath: cursorMode
