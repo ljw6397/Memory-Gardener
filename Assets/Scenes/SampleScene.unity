@@ -310,6 +310,7 @@ Transform:
   - {fileID: 1703261840}
   - {fileID: 667435935}
   - {fileID: 97211617}
+  - {fileID: 2126582407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &279958138
@@ -364,7 +365,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -425,8 +426,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727f5e9b817a3d74691ef0da36214a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grunt1
-  maxHealth: 100
+  maxHealth: 1000
   knockbackDuration: 0.15
+  groundCheck: {fileID: 2126582407}
+  groundCheckDistance: 0.15
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  airborneKnockbackThreshold: 1
+  slamDownThreshold: 8
+  slamDownAcceleration: 60
+  slamDownMaxSpeed: 30
+  bounceDamping: 0.4
+  bounceMinSpeed: 2
+  maxBounces: 2
   hitFlashDuration: 0.1
   detectionRadius: 5
   patrolSpeed: 1.5
@@ -452,7 +465,7 @@ GameObject:
   - component: {fileID: 352703506}
   m_Layer: 6
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -745,7 +758,11 @@ MonoBehaviour:
   shakeDuration: 0.4
   shakeMagnitudePixels: 8
   hitShakeDuration: 0.2
-  hitShakeMagnitudePixels: 12
+  hitShakeMagnitudeMin: 3
+  hitShakeMagnitudeMax: 6
+  playerHitShakeDuration: 0.15
+  playerHitShakeMagnitudeMin: 2
+  playerHitShakeMagnitudeMax: 3
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPunchHitbox
   damage: 5
   knockbackForce: 1.5
-  knockbackUpward: 0.2
+  knockbackUpward: 0
 --- !u!61 &667435937
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -964,7 +981,7 @@ GameObject:
   - component: {fileID: 682296338}
   - component: {fileID: 682296339}
   - component: {fileID: 682296340}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1133,6 +1150,8 @@ Transform:
   - {fileID: 1385229066}
   - {fileID: 1740233121}
   - {fileID: 939435133}
+  - {fileID: 1454479027}
+  - {fileID: 1948788876}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &682296338
@@ -1196,6 +1215,10 @@ MonoBehaviour:
   punchHitboxA: {fileID: 1385229067}
   punchHitboxB: {fileID: 1740233122}
   punchHitboxC: {fileID: 939435134}
+  kickHitbox: {fileID: 1454479028}
+  kickRecovery: 0.25
+  smashHitbox: {fileID: 1948788877}
+  smashRecovery: 0.3
   dashAttackRange: 8
 --- !u!114 &682296340
 MonoBehaviour:
@@ -1212,10 +1235,11 @@ MonoBehaviour:
   maxHealth: 100
   hitStunDuration: 0.1
   hitFlashDuration: 0.1
-  slowMoTimeScale: 0.17
+  slowMoTimeScale: 0.12
   backdashInputWindow: 0.3
-  slowMoRecoverySpeed: 1.5
+  slowMoRecoverySpeed: 8.37
   backdashKey: 32
+  airborneKnockbackThreshold: 7.99
 --- !u!1 &939435132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262,8 +1286,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
   damage: 10
-  knockbackForce: 4.5
-  knockbackUpward: 3.5
+  knockbackForce: 1
+  knockbackUpward: 8
 --- !u!61 &939435135
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1323,11 +1347,11 @@ GameObject:
   - component: {fileID: 1327271658}
   m_Layer: 6
   m_Name: Ground (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1327271658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1494,7 +1518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
   damage: 5
-  knockbackForce: 1
+  knockbackForce: 0.6
   knockbackUpward: 0
 --- !u!61 &1385229068
 BoxCollider2D:
@@ -1541,6 +1565,100 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 0.6437657, y: 0.41541007}
+  m_EdgeRadius: 0
+--- !u!1 &1454479026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1454479027}
+  - component: {fileID: 1454479029}
+  - component: {fileID: 1454479028}
+  m_Layer: 0
+  m_Name: KickHitboxA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1454479027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454479026}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.44645205, w: 0.8948075}
+  m_LocalPosition: {x: 0.549, y: 1.083, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 682296337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -53.033}
+--- !u!114 &1454479028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454479026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3141b6aaaab1ca46b05b10a5340addd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
+  damage: 10
+  knockbackForce: 0.8
+  knockbackUpward: 9
+--- !u!61 &1454479029
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454479026}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.050238192, y: -0.031969786}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.4428128, y: 0.88125515}
   m_EdgeRadius: 0
 --- !u!1 &1476869596
 GameObject:
@@ -1698,7 +1816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPunchHitbox
   damage: 5
   knockbackForce: 1
-  knockbackUpward: 0.2
+  knockbackUpward: 0
 --- !u!61 &1703261842
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1791,7 +1909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
   damage: 10
-  knockbackForce: 1.5
+  knockbackForce: 0.8
   knockbackUpward: 0
 --- !u!61 &1740233123
 BoxCollider2D:
@@ -1839,6 +1957,100 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.72988164, y: 0.3880073}
   m_EdgeRadius: 0
+--- !u!1 &1948788875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1948788876}
+  - component: {fileID: 1948788878}
+  - component: {fileID: 1948788877}
+  m_Layer: 0
+  m_Name: 'KickHitboxC '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1948788876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948788875}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.008120722, w: 0.99996704}
+  m_LocalPosition: {x: 0.95, y: 1.09, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 682296337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.931}
+--- !u!114 &1948788877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948788875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3141b6aaaab1ca46b05b10a5340addd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
+  damage: 10
+  knockbackForce: 0
+  knockbackUpward: -15
+--- !u!61 &1948788878
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948788875}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.050238192, y: -0.031969786}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.4428128, y: 0.88125515}
+  m_EdgeRadius: 0
 --- !u!1 &2010310571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,6 +2081,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 682296337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2126582406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2126582407}
+  m_Layer: 0
+  m_Name: 'GroundCheck '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2126582407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126582406}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.02, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 279958136}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

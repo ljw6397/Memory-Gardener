@@ -5,7 +5,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public PlayerController playerController;
-    public PlayerCombat playerCombat; 
+    public PlayerCombat playerCombat;
     public Vector3 offset = new Vector3(0f, 1.5f, -15f);
     public float smoothTime = 0.15f;
 
@@ -19,18 +19,24 @@ public class CameraFollow : MonoBehaviour
     public float aimTransitionSpeed = 6f;
 
     [Header("Lock-On Zoom (락온 대상 있을 때, 더 확대)")]
-    public float lockOnZoomFactor = 0.65f;     
-    public float lockOnOffsetFraction = 0.5f;   
-    public float maxLockOnOffsetX = 3f;         
-    public float lockOnTransitionSpeed = 6f;    
+    public float lockOnZoomFactor = 0.65f;
+    public float lockOnOffsetFraction = 0.5f;
+    public float maxLockOnOffsetX = 3f;
+    public float lockOnTransitionSpeed = 6f;
 
     [Header("Landing Shake")]
     public float shakeDuration = 0.25f;
     public float shakeMagnitudePixels = 3f;
 
-    [Header("Hit Shake")]
-    public float hitShakeDuration = 0.12f;
-    public float hitShakeMagnitudePixels = 2f;
+    [Header("Hit Shake - 적을 때렸을 때")] // ★ 변경
+    public float hitShakeDuration = 0.15f;           // ★ 조금 늘림
+    public float hitShakeMagnitudeMin = 3f;          // ★ 추가: 랜덤 최소 세기
+    public float hitShakeMagnitudeMax = 6f;          // ★ 추가: 랜덤 최대 세기 (기존 2보다 훨씬 세짐)
+
+    [Header("Player Hit Shake - 내가 맞았을 때")] // ★ 추가
+    public float playerHitShakeDuration = 0.15f;
+    public float playerHitShakeMagnitudeMin = 1f;    // ★ 적 때릴 때보다 약하게
+    public float playerHitShakeMagnitudeMax = 2f;
 
     private Vector3 velocity = Vector3.zero;
     private float lockedY;
@@ -39,8 +45,8 @@ public class CameraFollow : MonoBehaviour
     private int baseRefResX;
     private int baseRefResY;
     private float aimBlend = 0f;
-    private float lockBlend = 0f;           
-    private float lastLockOnOffsetX = 0f;   
+    private float lockBlend = 0f;
+    private float lastLockOnOffsetX = 0f;
 
     private float shakeTimer = 0f;
     private float currentShakeDuration = 0f;
@@ -60,12 +66,14 @@ public class CameraFollow : MonoBehaviour
 
         if (playerController != null) playerController.OnSlamLand += TriggerLandingShake;
         PunchHitbox.OnEnemyHit += TriggerHitShake;
+        EnemyPunchHitbox.OnPlayerHit += TriggerPlayerHitShake; // ★ 추가
     }
 
     void OnDestroy()
     {
         if (playerController != null) playerController.OnSlamLand -= TriggerLandingShake;
         PunchHitbox.OnEnemyHit -= TriggerHitShake;
+        EnemyPunchHitbox.OnPlayerHit -= TriggerPlayerHitShake; // ★ 추가
     }
 
     void TriggerLandingShake()
@@ -75,11 +83,20 @@ public class CameraFollow : MonoBehaviour
         currentShakeMagnitude = shakeMagnitudePixels;
     }
 
+    // ★ 변경: 랜덤 세기로 뽑음
     void TriggerHitShake()
     {
         shakeTimer = hitShakeDuration;
         currentShakeDuration = hitShakeDuration;
-        currentShakeMagnitude = hitShakeMagnitudePixels;
+        currentShakeMagnitude = Random.Range(hitShakeMagnitudeMin, hitShakeMagnitudeMax);
+    }
+
+    // ★ 추가: 플레이어가 맞았을 때 (더 약한 랜덤 세기)
+    void TriggerPlayerHitShake()
+    {
+        shakeTimer = playerHitShakeDuration;
+        currentShakeDuration = playerHitShakeDuration;
+        currentShakeMagnitude = Random.Range(playerHitShakeMagnitudeMin, playerHitShakeMagnitudeMax);
     }
 
     void LateUpdate()
@@ -106,7 +123,7 @@ public class CameraFollow : MonoBehaviour
         }
         else
         {
-            lockOnOffsetX = lastLockOnOffsetX; 
+            lockOnOffsetX = lastLockOnOffsetX;
         }
 
         float blendedOffsetX = Mathf.Lerp(normalAimOffsetX, lockOnOffsetX, lockBlend);

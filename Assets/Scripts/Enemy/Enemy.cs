@@ -11,11 +11,22 @@ public class Enemy : MonoBehaviour
     private float knockbackTimer = 0f;
     private Vector2 currentKnockback;
 
-    [Header("Airborne Knockback")]
+    [Header("Airborne Knockback (위로 띄우는 공격)")]
     public Transform groundCheck;
     public float groundCheckDistance = 0.15f;
     public LayerMask groundLayer;
     public float airborneKnockbackThreshold = 3f;
+
+    [Header("Slam Down (아래로 내려찍는 공격, 예: 플레이어 E 스킬)")]
+    public float slamDownThreshold = 8f;
+    public float slamDownAcceleration = 60f;
+    public float slamDownMaxSpeed = 30f;
+    public float bounceDamping = 0.4f;
+    public float bounceMinSpeed = 2f;
+    public int maxBounces = 3;
+
+    public static System.Action OnSlamBounce;
+    public static System.Action OnSlamSettled;
 
     [Header("Hit Feedback")]
     public float hitFlashDuration = 0.1f;
@@ -44,7 +55,11 @@ public class Enemy : MonoBehaviour
     private bool isAirborneKnockback = false;
     public bool IsAirborneKnockback => isAirborneKnockback;
 
-    private bool isKnockbackHeld = false; // ★ 추가: 지금 "누워있는" 정지 상태인지
+    private bool isSlammedDown = false;
+    public bool IsSlammedDown => isSlammedDown;
+    private int bounceCount = 0;
+
+    private bool isKnockbackHeld = false;
 
     protected virtual void Start()
     {
@@ -68,6 +83,12 @@ public class Enemy : MonoBehaviour
 
         if (isDead) return;
 
+        if (isSlammedDown)
+        {
+            UpdateSlamDown();
+            return;
+        }
+
         if (isAirborneKnockback)
         {
             if (isKnockbackHeld && rb.linearVelocity.y <= 0f && IsGroundedCheck())
@@ -78,7 +99,7 @@ public class Enemy : MonoBehaviour
 
                 if (animator != null)
                 {
-                    animator.speed = 1f; 
+                    animator.speed = 1f;
                 }
             }
             return;
@@ -88,15 +109,67 @@ public class Enemy : MonoBehaviour
         TryAcquireTarget();
     }
 
+    void UpdateSlamDown()
+    {
+        if (rb.linearVelocity.y <= 0f) // ★ 변경: <= 로 정점에 걸친 순간도 바로 가속
+        {
+            float fallSpeed = Mathf.Abs(rb.linearVelocity.y);
+            fallSpeed += slamDownAcceleration * Time.deltaTime;
+            fallSpeed = Mathf.Min(fallSpeed, slamDownMaxSpeed);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fallSpeed);
+
+            if (IsGroundedCheck())
+            {
+                HandleSlamBounce(fallSpeed);
+            }
+        }
+    }
+
+    void HandleSlamBounce(float impactSpeed)
+    {
+        bounceCount++;
+        float bounceSpeed = impactSpeed * bounceDamping;
+
+        if (bounceSpeed > bounceMinSpeed && bounceCount <= maxBounces)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, bounceSpeed);
+            OnSlamBounce?.Invoke();
+        }
+        else
+        {
+            FinishSlamDown();
+        }
+    }
+
+    void FinishSlamDown()
+    {
+        isSlammedDown = false;
+        isKnockbackHeld = false;
+        bounceCount = 0;
+        rb.linearVelocity = new Vector2(0f, 0f);
+
+        if (animator != null)
+        {
+            animator.speed = 1f;
+        }
+
+        OnSlamSettled?.Invoke();
+    }
+
     public void AnimEvent_KnockbackHold()
     {
-        if (!isAirborneKnockback) return; 
+        if (!isAirborneKnockback && !isSlammedDown) return;
 
         isKnockbackHeld = true;
         if (animator != null)
         {
-            animator.speed = 0f; 
+            animator.speed = 0f;
         }
+    }
+
+    public void AnimEvent_KnockbackFinished()
+    {
+        if (animator != null) animator.Play("Idle", 0, 0f);
     }
 
     bool IsGroundedCheck()
@@ -155,12 +228,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int amount, Vector2 knockback)
     {
         if (isDead) return;
-        if (isAirborneKnockback) return;
 
         currentHealth -= amount;
 
         currentKnockback = knockback;
-        knockbackTimer = knockbackDuration;
 
         if (rb != null)
             rb.linearVelocity = knockback;
@@ -181,13 +252,35 @@ public class Enemy : MonoBehaviour
 
         if (knockback.y >= airborneKnockbackThreshold)
         {
+            isSlammedDown = false;
+            bounceCount = 0;
             isAirborneKnockback = true;
-            isKnockbackHeld = false; 
+            isKnockbackHeld = false;
             knockbackTimer = 0f;
 
             if (animator != null)
             {
-                animator.speed = 1f; 
+                animator.speed = 1f;
+                animator.Play("Knockback", 0, 0f);
+            }
+        }
+        else if (knockback.y <= -slamDownThreshold)
+        {
+            isAirborneKnockback = false;
+            isSlammedDown = true;
+            isKnockbackHeld = false;
+            bounceCount = 0;
+            knockbackTimer = 0f;
+
+            // ★ 추가: 슬램 판정된 순간, knockback 벡터의 부호와 무관하게 무조건 아래로만 꽂히도록 강제
+            if (rb != null)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -Mathf.Abs(knockback.y));
+            }
+
+            if (animator != null)
+            {
+                animator.speed = 1f;
                 animator.Play("Knockback", 0, 0f);
             }
         }
@@ -203,7 +296,7 @@ public class Enemy : MonoBehaviour
     {
         isDead = true;
         isAirborneKnockback = false;
-        isKnockbackHeld = false;
+        isSlammedDown = false;
 
         if (animator != null)
         {
@@ -221,10 +314,5 @@ public class Enemy : MonoBehaviour
         if (col != null) col.enabled = false;
 
         Destroy(gameObject, 1f);
-    }
-
-    public void AnimEvent_KnockbackFinished()
-    {
-        if (animator != null) animator.Play("Idle", 0, 0f);
     }
 }

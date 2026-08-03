@@ -45,7 +45,8 @@ public class Grunt1 : Enemy
 
         if (IsDead) return;
         if (IsKnockedBack) return;
-        if (IsAirborneKnockback) return; // ★ 추가: 공중에 뜬 동안엔 AI 로직(순찰/추격/공격) 전부 정지
+        if (IsAirborneKnockback) return;
+        if (IsSlammedDown) return; // ★ 추가: 슬램 다운(내려찍힘) 중에도 AI 완전 정지
 
         if (isAttacking && !HasTarget)
         {

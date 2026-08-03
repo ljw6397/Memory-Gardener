@@ -12,6 +12,9 @@ public class EnemyPunchHitbox : MonoBehaviour
     private HashSet<Collider2D> hitTargets = new HashSet<Collider2D>();
     private Vector3 baseLocalPos;
 
+    // ★ 추가: 몬스터가 플레이어를 때렸을 때 알리는 static 이벤트 (PunchHitbox.OnEnemyHit과 대칭)
+    public static System.Action OnPlayerHit;
+
     void Awake()
     {
         col = GetComponent<Collider2D>();
@@ -50,10 +53,10 @@ public class EnemyPunchHitbox : MonoBehaviour
         if (playerHealth == null) return;
 
         float dir = (owner != null && owner.FacingRight) ? 1f : -1f;
-
-        // ★ 변경: normalized 제거 (위와 동일한 이유)
         Vector2 knockback = new Vector2(dir * knockbackForce, knockbackUpward);
 
         playerHealth.TakeDamage(damage, knockback);
+
+        OnPlayerHit?.Invoke(); // ★ 추가
     }
 }
