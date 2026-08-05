@@ -31,7 +31,6 @@ public class PlayerHealth : MonoBehaviour
     private bool awaitingBackdash = false;
     private float backdashWindowTimer = 0f;
     private float lastKnockbackDirX = 1f;
-    private bool recoveringTimeScale = false;
     private float baseFixedDeltaTime;
 
     private bool isAirborneKnockback = false; // ★ 추가
@@ -45,6 +44,7 @@ public class PlayerHealth : MonoBehaviour
     private bool isDead = false;
     public bool IsDead => isDead;
     public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback; // ★ 변경
+    public bool IsInSlowMo => Time.timeScale < 1f; // ★ 변경: timeScale이 1 미만이면(아직 복구 안 끝났으면) 전부 슬로우모션 중으로 취급
 
     void Awake()
     {
@@ -121,14 +121,16 @@ public class PlayerHealth : MonoBehaviour
         else if (backdashWindowTimer <= 0f)
         {
             awaitingBackdash = false;
-            recoveringTimeScale = true;
             hitStunTimer = hitStunDuration;
+            // ★ recoveringTimeScale = true; 삭제 — 이제 복구는 항상 진행 중이라 별도로 켤 필요 없음
         }
     }
 
     void HandleTimeScaleRecovery()
     {
-        if (!recoveringTimeScale) return;
+        // ★ 변경: awaitingBackdash나 다른 상태와 무관하게, timeScale이 1이 아니기만 하면 항상 서서히 복구
+        // → 이게 핵심! 맞은 순간부터 곧바로 "천천히 정상 속도로 돌아오는" 슬로우모션 느낌이 시작됨
+        if (Time.timeScale >= 1f) return;
 
         Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1f, slowMoRecoverySpeed * Time.unscaledDeltaTime);
         Time.fixedDeltaTime = baseFixedDeltaTime * Time.timeScale;
@@ -137,7 +139,6 @@ public class PlayerHealth : MonoBehaviour
         {
             Time.timeScale = 1f;
             Time.fixedDeltaTime = baseFixedDeltaTime;
-            recoveringTimeScale = false;
         }
     }
 
@@ -198,7 +199,6 @@ public class PlayerHealth : MonoBehaviour
         lastKnockbackDirX = knockback.x >= 0f ? 1f : -1f;
 
         awaitingBackdash = true;
-        recoveringTimeScale = false;
         backdashWindowTimer = backdashInputWindow;
 
         Time.timeScale = slowMoTimeScale;
@@ -211,7 +211,6 @@ public class PlayerHealth : MonoBehaviour
     void TriggerBackdash()
     {
         awaitingBackdash = false;
-        recoveringTimeScale = true;
         hitStunTimer = 0f;
 
         float backdashDir = lastKnockbackDirX;
@@ -226,7 +225,6 @@ public class PlayerHealth : MonoBehaviour
         awaitingBackdash = false;
         isAirborneKnockback = false; 
 
-        recoveringTimeScale = false;
         Time.timeScale = 1f;
         Time.fixedDeltaTime = baseFixedDeltaTime;
 
