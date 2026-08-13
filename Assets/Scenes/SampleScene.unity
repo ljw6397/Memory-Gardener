@@ -1482,13 +1482,15 @@ MonoBehaviour:
   enemyDamageLayer:
     serializedVersion: 2
     m_Bits: 128
-  enemyCheckDistance: 0.72
+  enemyCheckDistance: 0.82
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
   enemyCheckHeight: 2.71
   enemyCheckVerticalOffset: 1.15
   dashBlockCheckDistance: 0.4
+  enemyTopCheckDistance: 0.2
+  enemyTopSlideSpeed: 4
   backDashSpeed: 12
   backDashDuration: 0.25
 --- !u!114 &682296339
@@ -2558,6 +2560,10 @@ PrefabInstance:
     - target: {fileID: 5063045677092466759, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
       propertyPath: m_Name
       value: DemoManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063045677092466759, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5072055825480355480, guid: 9d3a3a8035baa20458411a58aa51065c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4276,6 +4282,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArcadeOverlay
       objectReference: {fileID: 0}
+    - target: {fileID: 2349249206846634382, guid: 838177f1f13cbfe4797a87f4792e19be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4045289467152872853, guid: 838177f1f13cbfe4797a87f4792e19be, type: 3}
       propertyPath: m_OverridePixelPerfect
       value: 0
@@ -4614,6 +4624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitStopManager
   hitStopDuration: 0.07
+  playerHealth: {fileID: 0}
 --- !u!1 &2126582406
 GameObject:
   m_ObjectHideFlags: 0

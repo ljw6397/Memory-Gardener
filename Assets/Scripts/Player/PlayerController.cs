@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public int shockwaveDamage = 8;
     public float shockwaveKnockbackForce = 6f;  
     public float shockwaveKnockbackUpward = 2f; 
-    public LayerMask enemyDamageLayer;          
+    public LayerMask enemyDamageLayer;
 
     [Header("Enemy Collision")]
     public float enemyCheckDistance = 0.15f;
@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
     public float enemyCheckHeight = 3f;
     public float enemyCheckVerticalOffset = 1f;
     public float dashBlockCheckDistance = 0.4f;
+    public float enemyTopCheckDistance = 0.2f; // ★ 추가: 발밑 방향으로 Enemy 몸통을 감지하는 거리
+    public float enemyTopSlideSpeed = 4f; // ★ 추가: 미끄러져 내려오는 속도
 
     [Header("Hit Backdash")]
     public float backDashSpeed = 12f;
@@ -111,6 +113,34 @@ public class PlayerController : MonoBehaviour
         Vector2 boxSize = new Vector2(0.1f, enemyCheckHeight);
         RaycastHit2D hit = Physics2D.BoxCast(boxCenter, boxSize, 0f, direction, distance, enemyLayer);
         return hit.collider != null;
+    }
+
+    // ★ 추가: 발밑 방향으로 Enemy 몸통이 있는지 감지 (Enemy 머리 위에 착지하는 상황 처리용)
+    RaycastHit2D CheckEnemyBelow()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, enemyTopCheckDistance, enemyLayer);
+    }
+    // ★ 추가: Enemy 위에서 자동으로 옆으로 미끄러지게 처리
+    void HandleEnemyTopSlide(RaycastHit2D enemyHit)
+    {
+        Bounds enemyBounds = enemyHit.collider.bounds;
+        float enemyTopY = enemyBounds.max.y;
+        float enemyCenterX = enemyBounds.center.x;
+
+        // Y는 계속 Enemy 윗면에 고정 (뚫고 들어가지 않게)
+        Vector2 pos = rb.position;
+        pos.y = enemyTopY + 0.01f;
+        rb.position = pos;
+
+        // 플레이어가 Enemy 중심보다 오른쪽이면 오른쪽으로, 왼쪽이면 왼쪽으로 자동으로 밀어줌
+        float slideDir = (transform.position.x >= enemyCenterX) ? 1f : -1f;
+
+        rb.linearVelocity = new Vector2(slideDir * enemyTopSlideSpeed, 0f);
+
+        facingRight = slideDir > 0f;
+        spriteRenderer.flipX = !facingRight;
+
+        animator.SetFloat("Speed", enemyTopSlideSpeed); // 걷는 애니메이션이 자연스럽게 재생됨
     }
 
     public void ForceCancelActions()
@@ -174,9 +204,7 @@ public class PlayerController : MonoBehaviour
         if (playerHealth != null && playerHealth.IsDead)
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-            animator.SetFloat("Speed", 0f);
-            animator.SetBool("Grounded", isGroundedAnim);
-            animator.SetFloat("VelocityY", rb.linearVelocity.y);
+            rb.gravityScale = normalGravity * fallGravityMultiplier;
             return;
         }
 
@@ -259,6 +287,20 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("SlamRecoveryDone", true);
 
         ApplyBetterGravity();
+
+        if (!isGrounded && rb.linearVelocity.y <= 0f)
+        {
+            RaycastHit2D enemyHit = CheckEnemyBelow();
+            if (enemyHit.collider != null)
+            {
+                HandleEnemyTopSlide(enemyHit);
+
+                animator.SetBool("IsSlamming", isSlamming);
+                animator.SetBool("Grounded", isGroundedAnim);
+                animator.SetFloat("VelocityY", rb.linearVelocity.y);
+                return; // ★ 중요: 여기서 바로 return해서 아래 HandleMove()가 슬라이드 속도를 덮어쓰지 못하게 함
+            }
+        }
 
         if (isDashAttacking)
         {

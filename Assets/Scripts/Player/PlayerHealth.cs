@@ -33,7 +33,7 @@ public class PlayerHealth : MonoBehaviour
     private float lastKnockbackDirX = 1f;
     private float baseFixedDeltaTime;
 
-    private bool isAirborneKnockback = false; // ★ 추가
+    private bool isAirborneKnockback = false; 
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -43,8 +43,8 @@ public class PlayerHealth : MonoBehaviour
 
     private bool isDead = false;
     public bool IsDead => isDead;
-    public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback; // ★ 변경
-    public bool IsInSlowMo => Time.timeScale < 1f; // ★ 변경: timeScale이 1 미만이면(아직 복구 안 끝났으면) 전부 슬로우모션 중으로 취급
+    public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback;
+    public bool IsInSlowMo => Time.timeScale < 1f; 
 
     void Awake()
     {
@@ -72,7 +72,19 @@ public class PlayerHealth : MonoBehaviour
     {
         HandleHitFlash();
 
-        if (isDead) return;
+        if (isDead) 
+        {
+            if (animator != null)
+            {
+                AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+                if(!state.IsName("Die") && !animator.IsInTransition(0))
+                {
+                    animator.Play("Die", 0, 0f);
+                }
+            }
+            return;
+        }
+
 
         if (isAirborneKnockback)
         {
@@ -122,14 +134,11 @@ public class PlayerHealth : MonoBehaviour
         {
             awaitingBackdash = false;
             hitStunTimer = hitStunDuration;
-            // ★ recoveringTimeScale = true; 삭제 — 이제 복구는 항상 진행 중이라 별도로 켤 필요 없음
         }
     }
 
     void HandleTimeScaleRecovery()
     {
-        // ★ 변경: awaitingBackdash나 다른 상태와 무관하게, timeScale이 1이 아니기만 하면 항상 서서히 복구
-        // → 이게 핵심! 맞은 순간부터 곧바로 "천천히 정상 속도로 돌아오는" 슬로우모션 느낌이 시작됨
         if (Time.timeScale >= 1f) return;
 
         Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1f, slowMoRecoverySpeed * Time.unscaledDeltaTime);
@@ -146,7 +155,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
         if (awaitingBackdash) return;
-        if (isAirborneKnockback) return; // ★ 추가: 공중 넉백 중엔 새 히트 무시 (필요하면 나중에 콤보 확장 가능)
+        if (isAirborneKnockback) return; 
 
         currentSegments = Mathf.Max(0, currentSegments - 1);
         OnHealthChanged?.Invoke(currentSegments, maxSegments);
@@ -173,7 +182,6 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        // ★ 추가: 위로 띄우는 공격이면 슬로우모션/백대시 대신 Knockback 애니메이션 경로로
         if (knockback.y >= airborneKnockbackThreshold)
         {
             isAirborneKnockback = true;
@@ -223,20 +231,26 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         hitStunTimer = 0f;
         awaitingBackdash = false;
-        isAirborneKnockback = false; 
+        isAirborneKnockback = false;
 
         Time.timeScale = 1f;
         Time.fixedDeltaTime = baseFixedDeltaTime;
-
-        if (animator != null)
-        {
-            animator.Play("Die", 0, 0f);
-        }
 
         playerCombat?.CancelCombo();
         playerController?.ForceCancelActions();
 
         if (rb != null)
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+        if (animator != null)
+        {
+            animator.SetFloat("VelocityY", 0f);
+            animator.SetBool("Grounded", true);
+            animator.SetFloat("Speed", 0f);
+            animator.SetBool("IsSlamming", false);
+            animator.SetBool("IsBackDashing", false);
+
+            animator.Play("Die", 0, 0f);
+        }
     }
 }
