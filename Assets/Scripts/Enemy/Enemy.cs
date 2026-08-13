@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     public float hitFlashDuration = 0.1f;
     private float hitFlashTimer = 0f;
     private Color originalColor;
+    private float knockbackTrueStartTime = 0f;
 
     [Header("Targeting (모든 몬스터 공통 — 한번 감지하면 영구 타겟)")]
     public float detectionRadius = 5f;
@@ -294,7 +295,7 @@ public class Enemy : MonoBehaviour
             if (animator != null)
             {
                 animator.speed = 1f;
-                animator.Play("Knockback", 0, 0f);
+                animator.Play("Knockback", 0, knockbackTrueStartTime);
             }
         }
         else if (knockback.y <= -slamDownThreshold)
@@ -317,7 +318,7 @@ public class Enemy : MonoBehaviour
             if (animator != null)
             {
                 animator.speed = 1f;
-                animator.Play("Knockback", 0, 0f);
+                animator.Play("Knockback", 0, knockbackTrueStartTime);
             }
         }
         else
@@ -350,5 +351,15 @@ public class Enemy : MonoBehaviour
         if (col != null) col.enabled = false;
 
         Destroy(gameObject, 1f);
+    }
+
+
+
+    //애니메이션 이벤트들
+    public void AnimEvent_KnockbackTrueStart()
+    {
+        if (animator == null) return;
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        knockbackTrueStartTime = state.normalizedTime % 1f; // 0~1 범위로 정규화해서 저장
     }
 }

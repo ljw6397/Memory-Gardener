@@ -105,6 +105,21 @@ public class PlayerController : MonoBehaviour
         return pos;
     }
 
+    public float heightCheckMaxDistance = 50f;
+
+    public float GetHeightAboveGround()
+    {
+        if (groundCheck == null) return 999f;
+
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, heightCheckMaxDistance, groundLayer);
+        if(hit.collider == null)
+        {
+            return hit.distance;
+        }
+        return 999f;
+    }
+    
+
     bool IsBlockedByEnemy(Vector2 direction, float distance = -1f)
     {
         if (distance < 0f) distance = enemyCheckDistance;

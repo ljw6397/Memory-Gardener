@@ -1493,6 +1493,7 @@ MonoBehaviour:
   enemyTopSlideSpeed: 4
   backDashSpeed: 12
   backDashDuration: 0.25
+  heightCheckMaxDistance: 50
 --- !u!114 &682296339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,7 +1537,11 @@ MonoBehaviour:
   backdashInputWindow: 0.3
   slowMoRecoverySpeed: 1
   backdashKey: 32
-  airborneKnockbackThreshold: 7.99
+  minAirborneKnockbackHeight: 1.3
+  airborneHitKnockbackForce: 10
+  airborneHitKnockbackUpward: 4
+  knockbackSlowMoTimeScale: 0.04
+  knockbackSlowMoRecoverySpeed: 4
 --- !u!1001 &851324225
 PrefabInstance:
   m_ObjectHideFlags: 0
