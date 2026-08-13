@@ -17,13 +17,18 @@ public class Enemy : MonoBehaviour
     public LayerMask groundLayer;
     public float airborneKnockbackThreshold = 3f;
 
+    [Header("Player Top Slide (떨어지다 Player 위에 걸리면 미끄러지게)")] // ★ 추가
+    public LayerMask playerLayer; // Inspector에서 PlayerBody 레이어 체크
+    public float playerTopCheckDistance = 0.2f;
+    public float playerTopSlideSpeed = 4f;
+
     [Header("Slam Down (아래로 내려찍는 공격, 예: 플레이어 E 스킬)")]
     public float slamDownThreshold = 8f;
     public float slamDownAcceleration = 60f;
     public float slamDownMaxSpeed = 30f;
     public float bounceDamping = 0.4f;
     public float bounceMinSpeed = 2f;
-    public int maxBounces = 2; // ★ 변경: 말씀하신 "두 번 튕기다가"에 맞춰 기본값 2로
+    public int maxBounces = 2;
 
     public static System.Action OnSlamBounce;
     public static System.Action OnSlamSettled;
@@ -32,7 +37,6 @@ public class Enemy : MonoBehaviour
     public float hitFlashDuration = 0.1f;
     private float hitFlashTimer = 0f;
     private Color originalColor;
-    private float knockbackTrueStartTime = 0f;
 
     [Header("Targeting (모든 몬스터 공통 — 한번 감지하면 영구 타겟)")]
     public float detectionRadius = 5f;
@@ -59,10 +63,11 @@ public class Enemy : MonoBehaviour
     private bool isSlammedDown = false;
     public bool IsSlammedDown => isSlammedDown;
     private int bounceCount = 0;
-    private bool wasGroundedWhenSlamStarted = false; // ★ 추가: 슬램 시작 시점에 이미 땅 위였는지 (=바운스 없이 즉시 박히는 케이스)
-    private bool isBouncing = false; // ★ 추가: 지금 튕겨서 공중에 뜬 상태인지 (착지 판정을 허용할지 결정)
+    private bool wasGroundedWhenSlamStarted = false;
+    private bool isBouncing = false;
 
     private bool isKnockbackHeld = false;
+    private float knockbackTrueStartTime = 0f;
 
     protected virtual void Start()
     {
@@ -94,6 +99,17 @@ public class Enemy : MonoBehaviour
 
         if (isAirborneKnockback)
         {
+            // ★ 추가: 떨어지는 중이고 바로 아래에 Player가 있으면, 착지 판정보다 우선해서 미끄러짐 처리
+            if (rb.linearVelocity.y <= 0f)
+            {
+                RaycastHit2D playerHit = CheckPlayerBelow();
+                if (playerHit.collider != null)
+                {
+                    HandleSlideOffPlayerTop(playerHit);
+                    return;
+                }
+            }
+
             if (isKnockbackHeld && rb.linearVelocity.y <= 0f && IsGroundedCheck())
             {
                 isAirborneKnockback = false;
@@ -112,16 +128,38 @@ public class Enemy : MonoBehaviour
         TryAcquireTarget();
     }
 
+    // ★ 추가: 바로 아래에 Player 콜라이더가 있는지 감지
+    RaycastHit2D CheckPlayerBelow()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, playerTopCheckDistance, playerLayer);
+    }
+
+    // ★ 추가: Player 위에서 자동으로 옆으로 미끄러지게 처리 (PlayerController.HandleEnemyTopSlide의 대칭 버전)
+    void HandleSlideOffPlayerTop(RaycastHit2D playerHit)
+    {
+        Bounds playerBounds = playerHit.collider.bounds;
+        float playerTopY = playerBounds.max.y;
+        float playerCenterX = playerBounds.center.x;
+
+        // Y는 Player 콜라이더 윗면에 고정 (파고들지 않게)
+        Vector2 pos = rb.position;
+        pos.y = playerTopY + 0.01f;
+        rb.position = pos;
+
+        // Enemy가 Player 중심보다 오른쪽이면 오른쪽으로, 왼쪽이면 왼쪽으로 자동으로 밀려남
+        float slideDir = (transform.position.x >= playerCenterX) ? 1f : -1f;
+
+        rb.linearVelocity = new Vector2(slideDir * playerTopSlideSpeed, 0f);
+    }
+
     void UpdateSlamDown()
     {
-        // ★ 케이스 1: 슬램 시작부터 이미 땅 위였던 적 → 튕기지 않고 즉시 정착
         if (wasGroundedWhenSlamStarted)
         {
             FinishSlamDown();
             return;
         }
 
-        // 낙하/가속 처리 (아래로 향하는 동안만)
         if (rb.linearVelocity.y < 0f)
         {
             float fallSpeed = Mathf.Abs(rb.linearVelocity.y);
@@ -130,25 +168,32 @@ public class Enemy : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fallSpeed);
         }
 
+        // ★ 추가: E 스킬(Slam)로 떨어지는 도중에도 Player 위에 걸리면 동일하게 미끄러짐
+        if (rb.linearVelocity.y <= 0f)
+        {
+            RaycastHit2D playerHit = CheckPlayerBelow();
+            if (playerHit.collider != null)
+            {
+                HandleSlideOffPlayerTop(playerHit);
+                return;
+            }
+        }
+
         bool grounded = IsGroundedCheck();
 
         if (!isBouncing)
         {
-            // ★ 핵심: velocity.y가 양수(막 튕겨서 올라가는 중)인 동안은 "공중에 떠서 튕기는 중"으로 표시해두고
-            // 착지 판정 자체를 하지 않음 → 이게 "튕겼는데 바로 또 착지로 오판되는" 문제를 막아줌
             if (rb.linearVelocity.y > 0f)
             {
                 isBouncing = true;
             }
             else if (grounded)
             {
-                // 아직 한 번도 안 튕겼고, 계속 땅에 붙어있는 상태 → 첫 착지
                 HandleSlamBounce(Mathf.Abs(rb.linearVelocity.y));
             }
         }
         else
         {
-            // 튕겨서 공중에 뜬 상태 → velocity.y가 다시 음수로 바뀌고(정점 찍고 하강 시작) + 실제로 땅에 닿아야만 착지로 인정
             if (rb.linearVelocity.y <= 0f && grounded)
             {
                 isBouncing = false;
@@ -165,7 +210,7 @@ public class Enemy : MonoBehaviour
         if (bounceSpeed > bounceMinSpeed && bounceCount <= maxBounces)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.5f, bounceSpeed);
-            isBouncing = true; // ★ 추가: 튕겨 올린 직후 즉시 "튕기는 중" 상태로 표시
+            isBouncing = true;
             OnSlamBounce?.Invoke();
         }
         else
@@ -188,6 +233,13 @@ public class Enemy : MonoBehaviour
         }
 
         OnSlamSettled?.Invoke();
+    }
+
+    public void AnimEvent_KnockbackTrueStart()
+    {
+        if (animator == null) return;
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        knockbackTrueStartTime = state.normalizedTime % 1f;
     }
 
     public void AnimEvent_KnockbackHold()
@@ -307,7 +359,6 @@ public class Enemy : MonoBehaviour
             isBouncing = false;
             knockbackTimer = 0f;
 
-            // ★ 핵심: 슬램이 시작되는 이 순간, 이미 땅에 붙어있는지(=원래 땅 위였는지) 미리 기록해둠
             wasGroundedWhenSlamStarted = IsGroundedCheck();
 
             if (rb != null)
@@ -351,15 +402,5 @@ public class Enemy : MonoBehaviour
         if (col != null) col.enabled = false;
 
         Destroy(gameObject, 1f);
-    }
-
-
-
-    //애니메이션 이벤트들
-    public void AnimEvent_KnockbackTrueStart()
-    {
-        if (animator == null) return;
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-        knockbackTrueStartTime = state.normalizedTime % 1f; // 0~1 범위로 정규화해서 저장
     }
 }
