@@ -86,22 +86,22 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.0625
-    functionName: AnimEvent_HitboxOn
-    data: A
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.25
-    functionName: AnimEvent_AttackFinished
+    functionName: AnimEvent_PowerPunchHitboxOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.25
-    functionName: AnimEvent_HitboxOff
-    data: A
+    functionName: AnimEvent_PowerPunchHitboxOff
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.3125
+    functionName: AnimEvent_PowerPunchFinished
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

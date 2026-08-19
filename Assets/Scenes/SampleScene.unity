@@ -614,6 +614,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   airborneKnockbackThreshold: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerTopCheckDistance: 0.2
+  playerTopSlideSpeed: 4
   slamDownThreshold: 8
   slamDownAcceleration: 60
   slamDownMaxSpeed: 30
@@ -803,6 +808,101 @@ Transform:
   - {fileID: 1327271660}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &443738083
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443738084}
+  - component: {fileID: 443738086}
+  - component: {fileID: 443738085}
+  m_Layer: 0
+  m_Name: PowerPunchHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443738084
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443738083}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.941, y: 0.585, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 682296337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &443738085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443738083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3141b6aaaab1ca46b05b10a5340addd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PunchHitbox
+  damage: 5
+  knockbackForce: 0
+  knockbackUpward: 0
+  isPowerHit: 1
+--- !u!61 &443738086
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443738083}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.050238237, y: 0.07307361}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.6437657, y: 0.41541007}
+  m_EdgeRadius: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -973,6 +1073,9 @@ MonoBehaviour:
   hitShakeDuration: 0.2
   hitShakeMagnitudeMin: 5
   hitShakeMagnitudeMax: 10
+  powerHitShakeDuration: 0.4
+  powerHitShakeMagnitudeMin: 10
+  powerHitShakeMagnitudeMax: 14
   playerHitShakeDuration: 0.45
   playerHitShakeMagnitudeMin: 4
   playerHitShakeMagnitudeMax: 8
@@ -1435,6 +1538,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2010310572}
+  - {fileID: 443738084}
   - {fileID: 1385229066}
   - {fileID: 1740233121}
   - {fileID: 939435133}
@@ -1518,6 +1622,13 @@ MonoBehaviour:
   smashHitbox: {fileID: 1948788877}
   smashRecovery: 0.3
   dashAttackRange: 8
+  powerPunchHitbox: {fileID: 443738085}
+  powerPunchBurstSpeed: 20
+  powerPunchStopDistance: 1.8
+  powerPunchKnockbackForce: 14
+  powerPunchKnockbackUpward: 6
+  powerPunchDoubleTapWindow: 0.3
+  powerPunchRecovery: 0.35
 --- !u!114 &682296340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3246,6 +3357,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 1
   knockbackUpward: 8
+  isPowerHit: 0
 --- !u!61 &939435135
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3707,6 +3819,7 @@ MonoBehaviour:
   damage: 5
   knockbackForce: 0
   knockbackUpward: 0
+  isPowerHit: 0
 --- !u!61 &1385229068
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3801,6 +3914,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0.8
   knockbackUpward: 9
+  isPowerHit: 0
 --- !u!61 &1454479029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4137,6 +4251,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0
   knockbackUpward: 0
+  isPowerHit: 0
 --- !u!61 &1740233123
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4348,6 +4463,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0
   knockbackUpward: -15
+  isPowerHit: 0
 --- !u!61 &1948788878
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4629,7 +4745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitStopManager
   hitStopDuration: 0.07
-  playerHealth: {fileID: 0}
+  powerHitStopDuration: 0.24
 --- !u!1 &2126582406
 GameObject:
   m_ObjectHideFlags: 0
