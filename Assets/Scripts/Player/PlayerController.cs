@@ -222,6 +222,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             rb.gravityScale = normalGravity * fallGravityMultiplier;
+            isAiming = false; 
+            return;
+        }
+
+        if (playerHealth != null && playerHealth.IsHitStunned)
+        {
+            isAiming = false; 
             return;
         }
 
