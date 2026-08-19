@@ -30,6 +30,17 @@ public class PlayerCombat : MonoBehaviour
     [Header("Dash Attack Targeting")]
     public float dashAttackRange = 8f;
 
+    [Header("Power Punch (조준 중 DD/AA)")]
+    public PunchHitbox powerPunchHitbox; // 파워펀치 전용 히트박스 (PunchHitbox 재사용, Is Power Hit 체크)
+    public float powerPunchBurstSpeed = 20f; // 기존 대시어택보다 빠르게
+    public float powerPunchStopDistance = 1f;
+    public float powerPunchKnockbackForce = 14f; // 멀리 날아가는 좌우 힘
+    public float powerPunchKnockbackUpward = 6f; // airborneKnockbackThreshold(보통 3)보다 확실히 커야 Knockback으로 처리됨
+    public float powerPunchDoubleTapWindow = 0.3f;
+    public float powerPunchRecovery = 0.35f;
+
+
+
     private int comboStep = 0;
     private bool isAttacking = false;
     private int queuedAttacks = 0;
@@ -48,9 +59,14 @@ public class PlayerCombat : MonoBehaviour
     private bool isRecovering = false;
     private float recoveryTimer = 0f;
 
-    public bool IsAttacking => isAttacking || isKicking || isSmashing;
+    private bool isPowerPunching = false;
+    private int powerPunchStartFrame = -1;
+    private float lastPowerDTapTime = -10f;
+    private float lastPowerATapTime = -10f;
+
+    public bool IsAttacking => isAttacking || isKicking || isSmashing || isPowerPunching;
     public bool IsRecovering => isRecovering;
-    public bool IsBusy => isAttacking || isKicking || isSmashing || isRecovering;
+    public bool IsBusy => isAttacking || isKicking || isSmashing || isPowerPunching || isRecovering;
     public Transform CurrentLockOnTarget => currentLockOnTarget;
 
     void Start()
@@ -79,9 +95,11 @@ public class PlayerCombat : MonoBehaviour
         HandleKickInput();
         HandleSmashInput();
         HandleSlamInput();
+        HandlePowerPunchInput(); // ★ 추가
         UpdateComboGap();
         UpdateRecovery();
         SafetyCheck();
+        UpdatePowerPunch(); // ★ 추가
     }
 
     void UpdateRecovery()
@@ -171,6 +189,86 @@ public class PlayerCombat : MonoBehaviour
         StartSmash();
     }
 
+    // ★ 추가: 조준(우클릭) 중 D 또는 A 더블탭 감지
+    void HandlePowerPunchInput()
+    {
+        if (isRecovering || isAttacking || isKicking || isSmashing || isPowerPunching) return;
+        if (playerController == null || !playerController.IsAiming) return;
+        if (!playerController.IsGrounded) return;
+        if (currentLockOnTarget == null) return; // 락온된 타겟이 없으면 발동 안 함
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (Time.time - lastPowerDTapTime <= powerPunchDoubleTapWindow)
+            {
+                StartPowerPunch();
+            }
+            lastPowerDTapTime = Time.time;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            if (Time.time - lastPowerATapTime <= powerPunchDoubleTapWindow)
+            {
+                StartPowerPunch();
+            }
+            lastPowerATapTime = Time.time;
+        }
+    }
+
+    void StartPowerPunch()
+    {
+        DeactivateAllHitboxes();
+
+        isPowerPunching = true;
+
+        // ★ 변경: SetTrigger 대신 즉시 컷 전환. 다른 모든 액션(Hit, Knockback, BackDash 등)과
+        // 동일한 방식으로 통일해서, "물리는 멈췄는데 애니메이션은 아직 Walk/Idle" 같은
+        // 한두 프레임짜리 경합을 원천 차단함.
+        animator.Play("PowerPunch", 0, 0f);
+
+        powerPunchStartFrame = Time.frameCount;
+
+        playerController.StartDashAttackBurst(currentLockOnTarget, powerPunchBurstSpeed, powerPunchStopDistance);
+    }
+
+    // Animation Event: 파워펀치 손이 닿는 프레임에 연결 → 넉백값을 강하게 세팅한 채로 히트박스 켬
+    public void AnimEvent_PowerPunchHitboxOn()
+    {
+        if (powerPunchHitbox == null) return;
+        powerPunchHitbox.knockbackForce = powerPunchKnockbackForce;
+        powerPunchHitbox.knockbackUpward = powerPunchKnockbackUpward;
+        powerPunchHitbox.Activate();
+    }
+
+    public void AnimEvent_PowerPunchHitboxOff()
+    {
+        powerPunchHitbox?.Deactivate();
+    }
+
+    // Animation Event: 파워펀치 클립 마지막 프레임에 연결
+    public void AnimEvent_PowerPunchFinished()
+    {
+        powerPunchHitbox?.Deactivate();
+        isPowerPunching = false;
+
+        isRecovering = true;
+        recoveryTimer = powerPunchRecovery;
+    }
+
+    void UpdatePowerPunch()
+    {
+        if (!isPowerPunching) return;
+        if (Time.frameCount == powerPunchStartFrame) return;
+
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        if (!state.IsTag("Attack") && !animator.IsInTransition(0))
+        {
+            powerPunchHitbox?.Deactivate();
+            isPowerPunching = false;
+        }
+    }
+
     void StartSmash()
     {
         DeactivateAllHitboxes();
@@ -232,6 +330,7 @@ public class PlayerCombat : MonoBehaviour
         punchHitboxC?.Deactivate();
         kickHitbox?.Deactivate();
         smashHitbox?.Deactivate();
+        powerPunchHitbox?.Deactivate(); // ★ 추가
     }
 
     void UpdateLockOnTarget()
@@ -390,6 +489,7 @@ public class PlayerCombat : MonoBehaviour
 
         isKicking = false;
         isSmashing = false;
+        isPowerPunching = false; 
     }
 
     void SafetyCheck()

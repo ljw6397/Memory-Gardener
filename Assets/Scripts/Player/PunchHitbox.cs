@@ -13,6 +13,10 @@ public class PunchHitbox : MonoBehaviour
     private Vector3 baseLocalPos;
 
     public static System.Action OnEnemyHit;
+    public static System.Action OnPowerHit;
+
+    [Header("Power Hit (º±≈√)")]
+    public bool isPowerHit = false;
 
     void Awake()
     {
@@ -62,5 +66,6 @@ public class PunchHitbox : MonoBehaviour
         enemy.TakeDamage(damage, knockback);
 
         OnEnemyHit?.Invoke();
+        if (isPowerHit) OnPowerHit?.Invoke();
     }
 }

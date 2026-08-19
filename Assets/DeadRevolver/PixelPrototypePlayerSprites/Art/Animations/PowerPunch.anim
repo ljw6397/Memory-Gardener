@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Knockback
+  m_Name: PowerPunch
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,24 +21,24 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 0f2ed21fe6ad49a4c91fa96263ad4f3d, type: 3}
-    - time: 0.083333336
-      value: {fileID: 21300000, guid: 34eb634bee51d594c9ec822bec6e1c94, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: 86f99be28ea602342a92171118ca29f9, type: 3}
+      value: {fileID: 21300000, guid: 5befad3c923602a4c8a363e1750b278a, type: 3}
+    - time: 0.0625
+      value: {fileID: 21300000, guid: 4d89809d9b8eb5e4ab276cb59019a940, type: 3}
+    - time: 0.125
+      value: {fileID: 21300000, guid: 9496eab68bc170941976436b12915922, type: 3}
+    - time: 0.1875
+      value: {fileID: 21300000, guid: b4e099288b4a5fc428e9b6cbd6683b73, type: 3}
     - time: 0.25
-      value: {fileID: 21300000, guid: f9c1d61d6c3a8534b85aa4b1e1de2daa, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 866ba21805882554b9a4de8523f67c98, type: 3}
-    - time: 0.41666666
-      value: {fileID: 21300000, guid: 686a67a6bae418a43a6c7900b7f0d022, type: 3}
+      value: {fileID: 21300000, guid: 775d77f2687fc3a43bfe38e5b8b14d23, type: 3}
+    - time: 0.3125
+      value: {fileID: 21300000, guid: 76b2e750fed7a424c9e74c55021aae30, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
     flags: 2
-  m_SampleRate: 12
-  m_WrapMode: 2
+  m_SampleRate: 16
+  m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -54,18 +54,18 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 0f2ed21fe6ad49a4c91fa96263ad4f3d, type: 3}
-    - {fileID: 21300000, guid: 34eb634bee51d594c9ec822bec6e1c94, type: 3}
-    - {fileID: 21300000, guid: 86f99be28ea602342a92171118ca29f9, type: 3}
-    - {fileID: 21300000, guid: f9c1d61d6c3a8534b85aa4b1e1de2daa, type: 3}
-    - {fileID: 21300000, guid: 866ba21805882554b9a4de8523f67c98, type: 3}
-    - {fileID: 21300000, guid: 686a67a6bae418a43a6c7900b7f0d022, type: 3}
+    - {fileID: 21300000, guid: 5befad3c923602a4c8a363e1750b278a, type: 3}
+    - {fileID: 21300000, guid: 4d89809d9b8eb5e4ab276cb59019a940, type: 3}
+    - {fileID: 21300000, guid: 9496eab68bc170941976436b12915922, type: 3}
+    - {fileID: 21300000, guid: b4e099288b4a5fc428e9b6cbd6683b73, type: 3}
+    - {fileID: 21300000, guid: 775d77f2687fc3a43bfe38e5b8b14d23, type: 3}
+    - {fileID: 21300000, guid: 76b2e750fed7a424c9e74c55021aae30, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.375
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -85,23 +85,23 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.16666667
-    functionName: AnimEvent_KnockbackTrueStart
+  - time: 0.0625
+    functionName: AnimEvent_HitboxOn
+    data: A
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.25
+    functionName: AnimEvent_AttackFinished
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
-    functionName: AnimEvent_KnockbackHold
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
-    functionName: AnimEvent_KnockbackFinished
-    data: 
+  - time: 0.25
+    functionName: AnimEvent_HitboxOff
+    data: A
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

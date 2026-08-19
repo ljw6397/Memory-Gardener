@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour
     private bool isBackDashing = false;
     public bool IsBackDashing => isBackDashing;
     private float backDashTimer = 0f;
+    private float currentDashAttackSpeed; // ★ 추가: 매번 다른 속도(파워펀치는 더 빠르게)를 쓸 수 있게
+    private float currentDashAttackStopDistance;
 
     void Start()
     {
@@ -327,7 +329,7 @@ public class PlayerController : MonoBehaviour
                 float dx = dashAttackTarget.position.x - transform.position.x;
                 float absDx = Mathf.Abs(dx);
 
-                if (absDx <= dashAttackStopDistance)
+                if (absDx <= currentDashAttackStopDistance)
                 {
                     shouldStop = true;
                 }
@@ -342,7 +344,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        rb.linearVelocity = new Vector2(dir * dashAttackBurstSpeed, rb.linearVelocity.y);
+                        rb.linearVelocity = new Vector2(dir * currentDashAttackSpeed, rb.linearVelocity.y);
                         facingRight = dir > 0f;
                         spriteRenderer.flipX = !facingRight;
                     }
@@ -477,11 +479,14 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", animSpeed);
     }
 
-    public void StartDashAttackBurst(Transform target = null)
+    public void StartDashAttackBurst(Transform target = null, float burstSpeed = -1f, float stopDistance = -1f)
     {
         isDashAttacking = true;
         dashAttackTarget = target;
         dashAttackTimer = target != null ? dashAttackLockedMaxDuration : dashAttackBurstDuration;
+
+        currentDashAttackSpeed = burstSpeed > 0f ? burstSpeed : dashAttackBurstSpeed;
+        currentDashAttackStopDistance = stopDistance > 0f ? stopDistance : dashAttackStopDistance;
 
         if (target != null)
         {
@@ -490,12 +495,12 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = !faceRightNow;
 
             float dir = faceRightNow ? 1f : -1f;
-            rb.linearVelocity = new Vector2(dir * dashAttackBurstSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(dir * currentDashAttackSpeed, rb.linearVelocity.y);
         }
         else
         {
             float dir = facingRight ? 1f : -1f;
-            rb.linearVelocity = new Vector2(dir * dashAttackBurstSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(dir * currentDashAttackSpeed, rb.linearVelocity.y);
         }
     }
 

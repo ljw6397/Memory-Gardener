@@ -33,6 +33,11 @@ public class CameraFollow : MonoBehaviour
     public float hitShakeMagnitudeMin = 3f;          // ★ 추가: 랜덤 최소 세기
     public float hitShakeMagnitudeMax = 6f;          // ★ 추가: 랜덤 최대 세기 (기존 2보다 훨씬 세짐)
 
+    [Header("Power Hit Shake - 파워펀치로 때렸을 때 (더 크게)")] // ★ 추가
+    public float powerHitShakeDuration = 0.25f;
+    public float powerHitShakeMagnitudeMin = 8f;
+    public float powerHitShakeMagnitudeMax = 12f;
+
     [Header("Player Hit Shake - 내가 맞았을 때")] // ★ 추가
     public float playerHitShakeDuration = 0.15f;
     public float playerHitShakeMagnitudeMin = 1f;    // ★ 적 때릴 때보다 약하게
@@ -66,6 +71,7 @@ public class CameraFollow : MonoBehaviour
 
         if (playerController != null) playerController.OnSlamLand += TriggerLandingShake;
         PunchHitbox.OnEnemyHit += TriggerHitShake;
+        PunchHitbox.OnPowerHit += TriggerPowerHitShake;
         EnemyPunchHitbox.OnPlayerHit += TriggerPlayerHitShake; // ★ 추가
     }
 
@@ -74,6 +80,7 @@ public class CameraFollow : MonoBehaviour
         if (playerController != null) playerController.OnSlamLand -= TriggerLandingShake;
         PunchHitbox.OnEnemyHit -= TriggerHitShake;
         EnemyPunchHitbox.OnPlayerHit -= TriggerPlayerHitShake; // ★ 추가
+        PunchHitbox.OnPowerHit -= TriggerPowerHitShake;
     }
 
     void TriggerLandingShake()
@@ -89,6 +96,13 @@ public class CameraFollow : MonoBehaviour
         shakeTimer = hitShakeDuration;
         currentShakeDuration = hitShakeDuration;
         currentShakeMagnitude = Random.Range(hitShakeMagnitudeMin, hitShakeMagnitudeMax);
+    }
+
+    void TriggerPowerHitShake()
+    {
+        shakeTimer = powerHitShakeDuration;
+        currentShakeDuration = powerHitShakeDuration;
+        currentShakeMagnitude = Random.Range(powerHitShakeMagnitudeMin, powerHitShakeMagnitudeMax);
     }
 
     // ★ 추가: 플레이어가 맞았을 때 (더 약한 랜덤 세기)
