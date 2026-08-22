@@ -12,8 +12,11 @@ public class PunchHitbox : MonoBehaviour
     private HashSet<Collider2D> hitTargets = new HashSet<Collider2D>();
     private Vector3 baseLocalPos;
 
-    public static System.Action OnEnemyHit;
+    public static System.Action<string> OnEnemyHit; // ★ 변경: 어떤 히트박스가 때렸는지 문자열로 같이 전달
     public static System.Action OnPowerHit;
+
+    [Header("Sound ID (이 히트박스가 맞췄을 때 재생할 사운드 구분용, 예: A/B/C/Kick/Smash)")]
+    public string hitSoundId = "";
 
     [Header("Power Hit (선택)")]
     public bool isPowerHit = false;
@@ -65,7 +68,7 @@ public class PunchHitbox : MonoBehaviour
 
         enemy.TakeDamage(damage, knockback);
 
-        OnEnemyHit?.Invoke();
+        OnEnemyHit?.Invoke(hitSoundId); // ★ 변경: 파라미터로 어떤 히트박스인지 같이 넘김
         if (isPowerHit) OnPowerHit?.Invoke();
     }
 }

@@ -23,11 +23,10 @@ public class HitStopManager : MonoBehaviour
         PunchHitbox.OnPowerHit -= TriggerPowerHitStop; // ★ 추가
     }
 
-    void TriggerHitStop()
+    void TriggerHitStop(string soundId) // ★ 변경: 파라미터 추가
     {
         StartHitStop(hitStopDuration);
     }
-
     void TriggerPowerHitStop() // ★ 추가
     {
         StartHitStop(powerHitStopDuration);

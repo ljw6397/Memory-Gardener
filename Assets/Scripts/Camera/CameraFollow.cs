@@ -91,7 +91,7 @@ public class CameraFollow : MonoBehaviour
     }
 
     // ★ 변경: 랜덤 세기로 뽑음
-    void TriggerHitShake()
+    void TriggerHitShake(string soundId) // ★ 변경: 파라미터 추가 (내용은 안 씀, 시그니처만 맞춤)
     {
         shakeTimer = hitShakeDuration;
         currentShakeDuration = hitShakeDuration;

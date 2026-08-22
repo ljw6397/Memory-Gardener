@@ -51,6 +51,8 @@ public class PlayerHealth : MonoBehaviour
     public bool IsHitStunned => hitStunTimer > 0f || awaitingBackdash || isAirborneKnockback;
     public bool IsInSlowMo => Time.timeScale < 1f;
 
+    public static System.Action OnPlayerTookDamage;
+
     void Awake()
     {
         maxSegments = maxHearts * 2;
@@ -172,6 +174,8 @@ public class PlayerHealth : MonoBehaviour
 
         currentSegments = Mathf.Max(0, currentSegments - 1);
         OnHealthChanged?.Invoke(currentSegments, maxSegments);
+
+        OnPlayerTookDamage?.Invoke(); // ★ 추가
 
         // ★ 변경: 힘의 크기가 아니라 "지금 얼마나 공중에 떠 있는지"로 판정
         bool playerIsAirborne = playerController != null && !playerController.IsGrounded;

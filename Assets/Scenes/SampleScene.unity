@@ -856,6 +856,7 @@ MonoBehaviour:
   damage: 5
   knockbackForce: 0
   knockbackUpward: 0
+  hitSoundId: Smash
   isPowerHit: 1
 --- !u!61 &443738086
 BoxCollider2D:
@@ -1367,11 +1368,13 @@ GameObject:
   - component: {fileID: 682296337}
   - component: {fileID: 682296336}
   - component: {fileID: 682296335}
+  - component: {fileID: 682296342}
   - component: {fileID: 682296334}
   - component: {fileID: 682296333}
   - component: {fileID: 682296338}
   - component: {fileID: 682296339}
   - component: {fileID: 682296340}
+  - component: {fileID: 682296341}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1653,6 +1656,128 @@ MonoBehaviour:
   airborneHitKnockbackUpward: 4
   knockbackSlowMoTimeScale: 0.04
   knockbackSlowMoRecoverySpeed: 4
+--- !u!114 &682296341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682296332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bc25dd3111aa0a47ae8e3a62023aa1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
+  audioSource: {fileID: 682296342}
+  whooshSounds:
+  - {fileID: 8300000, guid: 0bd9ef9858c2afa48a40fc62c0df0a88, type: 3}
+  punchAHitSound: {fileID: 8300000, guid: 7599f89faf345be45b20e99a93adaa5f, type: 3}
+  punchBHitSound: {fileID: 8300000, guid: 4510b609eb2ef374aa237959909cb681, type: 3}
+  punchCHitSound: {fileID: 8300000, guid: 6a773ce6c20d48a41991950d069a5277, type: 3}
+  kickAHitSound: {fileID: 8300000, guid: 5ee76d7f686073044b78952130503533, type: 3}
+  kickCHitSound: {fileID: 8300000, guid: 6a773ce6c20d48a41991950d069a5277, type: 3}
+  smashHitSound: {fileID: 8300000, guid: 2fed1073e3ad73548b7f7db36d52b1c8, type: 3}
+  dashAttackHitSound: {fileID: 8300000, guid: 5835dee487c88a54780b33b47ba587e3, type: 3}
+  groundSlamSound: {fileID: 0}
+  playerHurtSounds: []
+  pitchVariance: 0.05
+--- !u!82 &682296342
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682296332}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &851324225
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3357,6 +3482,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 1
   knockbackUpward: 8
+  hitSoundId: C
   isPowerHit: 0
 --- !u!61 &939435135
 BoxCollider2D:
@@ -3819,6 +3945,7 @@ MonoBehaviour:
   damage: 5
   knockbackForce: 0
   knockbackUpward: 0
+  hitSoundId: A
   isPowerHit: 0
 --- !u!61 &1385229068
 BoxCollider2D:
@@ -3914,6 +4041,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0.8
   knockbackUpward: 9
+  hitSoundId: KickA
   isPowerHit: 0
 --- !u!61 &1454479029
 BoxCollider2D:
@@ -4251,6 +4379,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0
   knockbackUpward: 0
+  hitSoundId: B
   isPowerHit: 0
 --- !u!61 &1740233123
 BoxCollider2D:
@@ -4463,6 +4592,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0
   knockbackUpward: -15
+  hitSoundId: KickB
   isPowerHit: 0
 --- !u!61 &1948788878
 BoxCollider2D:
