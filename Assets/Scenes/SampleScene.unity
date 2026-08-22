@@ -1673,13 +1673,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0bd9ef9858c2afa48a40fc62c0df0a88, type: 3}
   punchAHitSound: {fileID: 8300000, guid: 7599f89faf345be45b20e99a93adaa5f, type: 3}
   punchBHitSound: {fileID: 8300000, guid: 4510b609eb2ef374aa237959909cb681, type: 3}
-  punchCHitSound: {fileID: 8300000, guid: 6a773ce6c20d48a41991950d069a5277, type: 3}
-  kickAHitSound: {fileID: 8300000, guid: 5ee76d7f686073044b78952130503533, type: 3}
-  kickCHitSound: {fileID: 8300000, guid: 6a773ce6c20d48a41991950d069a5277, type: 3}
+  punchCHitSound: {fileID: 8300000, guid: 0bb791d57d918884d8cf4fd66ccad771, type: 3}
+  kickAHitSound: {fileID: 8300000, guid: f9cfcf318a7d7444da13775c5d3367c3, type: 3}
+  kickCHitSound: {fileID: 8300000, guid: cce3223be18c40542a9038e1298f56ae, type: 3}
   smashHitSound: {fileID: 8300000, guid: 2fed1073e3ad73548b7f7db36d52b1c8, type: 3}
   dashAttackHitSound: {fileID: 8300000, guid: 5835dee487c88a54780b33b47ba587e3, type: 3}
-  groundSlamSound: {fileID: 0}
-  playerHurtSounds: []
+  commonHitSounds:
+  - {fileID: 8300000, guid: 2df447ad7e5f94a40919f90f336897a9, type: 3}
+  commonHitVolume: 0.2
+  groundSlamSound: {fileID: 8300000, guid: c35f504c1cc02d948a4a45536af2d41c, type: 3}
+  groundSlamHitSound: {fileID: 8300000, guid: 2df447ad7e5f94a40919f90f336897a9, type: 3}
+  playerHurtSounds:
+  - {fileID: 8300000, guid: 313f3ef8b51d44e4e98922423f04a616, type: 3}
+  - {fileID: 8300000, guid: 71a4ed4df909e0f4195cae292fcce1cf, type: 3}
+  - {fileID: 8300000, guid: ac514c7f8cad93c4b9e0be9064007712, type: 3}
   pitchVariance: 0.05
 --- !u!82 &682296342
 AudioSource:
@@ -4592,7 +4599,7 @@ MonoBehaviour:
   damage: 10
   knockbackForce: 0
   knockbackUpward: -15
-  hitSoundId: KickB
+  hitSoundId: KickC
   isPowerHit: 0
 --- !u!61 &1948788878
 BoxCollider2D:

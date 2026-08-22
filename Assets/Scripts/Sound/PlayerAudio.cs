@@ -22,8 +22,9 @@ public class PlayerAudio : MonoBehaviour
     [Range(0f, 1f)]
     public float commonHitVolume = 0.4f; // ★ 추가: 작게 재생하고 싶으신 볼륨
 
-    [Header("Ground Slam (착지 시)")] // ★ 추가
-    public AudioClip groundSlamSound;
+    [Header("Ground Slam (착지 시)")]
+    public AudioClip groundSlamSound; // 착지 순간 항상 나는 "쿵" 소리 (기존)
+    public AudioClip groundSlamHitSound;
 
     [Header("Player Hit (내가 맞았을 때)")] // ★ 추가
     public AudioClip[] playerHurtSounds; // 여러 개면 랜덤 재생
@@ -82,10 +83,11 @@ public class PlayerAudio : MonoBehaviour
             case "A": return punchAHitSound;
             case "B": return punchBHitSound;
             case "C": return punchCHitSound;
-            case "KickA": return kickAHitSound;   // ★ 추가
-            case "KickC": return kickCHitSound;   // ★ 추가
+            case "KickA": return kickAHitSound;
+            case "KickC": return kickCHitSound;
             case "Smash": return smashHitSound;
-            case "DashAttack": return dashAttackHitSound; // ★ 추가
+            case "DashAttack": return dashAttackHitSound;
+            case "GroundSlam": return groundSlamHitSound; // ★ 추가
             default: return null;
         }
     }

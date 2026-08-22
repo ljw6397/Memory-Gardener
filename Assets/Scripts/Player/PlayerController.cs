@@ -198,16 +198,25 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, shockwaveRadius, enemyDamageLayer);
 
+        bool hitAnyEnemy = false; // ★ 추가: 이번 슬램으로 한 명이라도 맞췄는지 추적
+
         foreach (Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy == null || enemy.IsDead) continue;
 
-            // 플레이어 기준 왼쪽/오른쪽 판단: 적이 플레이어보다 왼쪽이면 -1(왼쪽으로 날아감), 오른쪽이면 +1(오른쪽으로)
             float dir = (hit.transform.position.x >= transform.position.x) ? 1f : -1f;
-
             Vector2 knockback = new Vector2(dir * shockwaveKnockbackForce, shockwaveKnockbackUpward);
             enemy.TakeDamage(shockwaveDamage, knockback);
+
+            hitAnyEnemy = true; // ★ 추가
+        }
+
+        // ★ 추가: 한 명이라도 맞췄으면, PunchHitbox를 거치지 않는 이 공격도 동일하게 OnEnemyHit 이벤트를 발동
+        // (카메라 흔들림/히트스탑도 이미 이 이벤트를 구독 중이니, 그동안 GroundSlam은 이 연출들도 못 받고 있었을 가능성이 있어요)
+        if (hitAnyEnemy)
+        {
+            PunchHitbox.OnEnemyHit?.Invoke("GroundSlam");
         }
     }
 
